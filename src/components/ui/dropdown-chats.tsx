@@ -14,17 +14,19 @@ const chats = [
   {
     id: 1,
     user: "Yash Chauhan",
-    avatar: "/api/placeholder/40/40",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face",
     badge: "🔥",
     time: "5d",
-    message: "Hello there, Yash here! Just approved your membership. ..."
+    message: "Hello there, Yash here! Just approved your membership. ...",
+    isRead: false
   },
   {
     id: 2,
     user: "Nate Herkelman",
-    avatar: "/api/placeholder/40/40",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
     time: "5d",
-    message: "Hey A! Welcome to AI Automation Society! We're so glad ..."
+    message: "Hey A! Welcome to AI Automation Society! We're so glad ...",
+    isRead: true
   }
 ]
 
@@ -38,7 +40,7 @@ export default function ChatsDropdown() {
           <MessageCircle className="w-5 h-5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-96 p-0" align="end">
+      <DropdownMenuContent className="w-[480px] p-0" align="end">
         <div className="bg-white rounded-lg shadow-lg border">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
@@ -66,7 +68,7 @@ export default function ChatsDropdown() {
           {/* Chats List */}
           <div className="max-h-96 overflow-y-auto">
             {chats.map((chat) => (
-              <div key={chat.id} className="flex items-start gap-3 p-4 hover:bg-gray-50 border-b last:border-b-0 cursor-pointer">
+              <div key={chat.id} className={`flex items-start gap-3 p-4 hover:bg-gray-50 border-b last:border-b-0 cursor-pointer ${chat.isRead ? 'opacity-60' : ''}`}>
                 <Avatar className="w-10 h-10">
                   <AvatarImage src={chat.avatar} />
                   <AvatarFallback>{chat.user.split(' ').map(n => n[0]).join('')}</AvatarFallback>

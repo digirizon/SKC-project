@@ -9,7 +9,7 @@ import ProfileDropdown from "@/components/ui/dropdown-profile"
 import AuthModal from "@/components/auth/AuthModal"
 
 export default function Header() {
-  const [isLoggedIn] = useState(true)
+  const [isLoggedIn] = useState(false) // Changed to false - only show dropdowns when logged in
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("login")
 

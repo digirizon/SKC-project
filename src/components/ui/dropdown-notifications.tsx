@@ -13,7 +13,7 @@ const notifications = [
   {
     id: 1,
     user: "Jay E",
-    avatar: "/api/placeholder/40/40",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
     badge: "💎",
     action: "(following) new post",
     time: "5d",
@@ -23,7 +23,7 @@ const notifications = [
   {
     id: 2,
     user: "Nate Herk",
-    avatar: "/api/placeholder/40/40",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
     badge: "💎",
     action: "(following) new post",
     time: "5d",
@@ -33,7 +33,7 @@ const notifications = [
   {
     id: 3,
     user: "Nate Herk",
-    avatar: "/api/placeholder/40/40",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
     badge: "💎",
     action: "(following) new post",
     time: "5d",
@@ -43,7 +43,7 @@ const notifications = [
   {
     id: 4,
     user: "AI Automation",
-    avatar: "/api/placeholder/40/40",
+    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=40&h=40&fit=crop&crop=face",
     action: "membership approved",
     time: "5d",
     title: "A community for mastering AI-driven automation and ...",
@@ -52,7 +52,7 @@ const notifications = [
   {
     id: 5,
     user: "AI Automation",
-    avatar: "/api/placeholder/40/40",
+    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=40&h=40&fit=crop&crop=face",
     action: "membership approved",
     time: "1d",
     title: "Where Creators & Business Owners Automate like pros...",
@@ -61,7 +61,7 @@ const notifications = [
   {
     id: 6,
     user: "Nate Herk",
-    avatar: "/api/placeholder/40/40",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
     badge: "💎",
     action: "(following) new post",
     time: "3d",
@@ -71,7 +71,7 @@ const notifications = [
   {
     id: 7,
     user: "Nate Herk",
-    avatar: "/api/placeholder/40/40",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
     badge: "💎",
     action: "(admin) new post",
     time: "3d",
@@ -96,7 +96,7 @@ export default function NotificationsDropdown() {
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-96 p-0" align="end">
+      <DropdownMenuContent className="w-[480px] p-0" align="end">
         <div className="bg-white rounded-lg shadow-lg border">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
@@ -129,7 +129,7 @@ export default function NotificationsDropdown() {
           {/* Notifications List */}
           <div className="max-h-96 overflow-y-auto">
             {notifications.map((notification) => (
-              <div key={notification.id} className="flex items-start gap-3 p-4 hover:bg-gray-50 border-b last:border-b-0">
+              <div key={notification.id} className={`flex items-start gap-3 p-4 hover:bg-gray-50 border-b last:border-b-0 ${notification.isRead ? 'opacity-60' : ''}`}>
                 <Avatar className="w-10 h-10">
                   <AvatarImage src={notification.avatar} />
                   <AvatarFallback>{notification.user.split(' ').map(n => n[0]).join('')}</AvatarFallback>
