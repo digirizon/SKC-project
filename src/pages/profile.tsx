@@ -1,8 +1,7 @@
-
 import React from "react"
 import Head from "next/head"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+// import Link from "next/link" // Removed unused import
+// import { Button } from "@/components/ui/button" // Removed unused import
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
