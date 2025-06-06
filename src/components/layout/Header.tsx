@@ -1,10 +1,12 @@
 import React, { useState } from "react"
 import Link from "next/link"
-import { ChevronDown, MessageCircle, Bell, User } from "lucide-react"
+import { ChevronDown, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import NotificationsDropdown from "@/components/ui/dropdown-notifications"
+import ChatsDropdown from "@/components/ui/dropdown-chats"
 
 export default function Header() {
-  const [isLoggedIn] = useState(false) // Removed setIsLoggedIn as it's not used
+  const [isLoggedIn] = useState(false)
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -39,15 +41,8 @@ export default function Header() {
           <div className="flex items-center space-x-4">
             {isLoggedIn ? (
               <>
-                <Button variant="ghost" size="sm">
-                  <MessageCircle className="w-5 h-5" />
-                </Button>
-                <Button variant="ghost" size="sm" className="relative">
-                  <Bell className="w-5 h-5" />
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    1
-                  </span>
-                </Button>
+                <ChatsDropdown />
+                <NotificationsDropdown />
                 <Button variant="ghost" size="sm">
                   <User className="w-5 h-5" />
                   <span className="ml-2">PE</span>

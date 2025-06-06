@@ -187,22 +187,22 @@ export default function CommunityDetails() {
 
               {/* Category Filters */}
               <div className="flex flex-wrap gap-2 mb-6">
-                <Button variant="outline" size="sm" className="rounded-full">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
                   All
                 </Button>
-                <Button variant="outline" size="sm" className="rounded-full">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
                   🔥 General discussion
                 </Button>
-                <Button variant="outline" size="sm" className="rounded-full">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
                   📢 Announcements
                 </Button>
-                <Button variant="outline" size="sm" className="rounded-full">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
                   🎯 Nuggets & Tips
                 </Button>
-                <Button variant="outline" size="sm" className="rounded-full">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
                   👋 Introduce Yourself
                 </Button>
-                <Button variant="outline" size="sm" className="rounded-full">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
                   ⚙️
                 </Button>
               </div>
