@@ -187,22 +187,22 @@ export default function CommunityDetails() {
 
               {/* Category Filters */}
               <div className="flex flex-wrap gap-2 mb-6">
-                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-100 bg-white">
                   All
                 </Button>
-                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-100 bg-white">
                   🔥 General discussion
                 </Button>
-                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-100 bg-white">
                   📢 Announcements
                 </Button>
-                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-100 bg-white">
                   🎯 Nuggets & Tips
                 </Button>
-                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-100 bg-white">
                   👋 Introduce Yourself
                 </Button>
-                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-50">
+                <Button variant="outline" size="sm" className="rounded-full text-gray-700 border-gray-300 hover:bg-gray-100 bg-white">
                   ⚙️
                 </Button>
               </div>

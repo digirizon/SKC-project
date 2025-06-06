@@ -6,7 +6,7 @@ import NotificationsDropdown from "@/components/ui/dropdown-notifications"
 import ChatsDropdown from "@/components/ui/dropdown-chats"
 
 export default function Header() {
-  const [isLoggedIn] = useState(false)
+  const [isLoggedIn] = useState(true) // Set to true for testing profile link and dropdowns
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -43,10 +43,12 @@ export default function Header() {
               <>
                 <ChatsDropdown />
                 <NotificationsDropdown />
-                <Button variant="ghost" size="sm">
-                  <User className="w-5 h-5" />
-                  <span className="ml-2">PE</span>
-                </Button>
+                <Link href="/profile">
+                  <Button variant="ghost" size="sm" className="flex items-center">
+                    <User className="w-5 h-5" />
+                    <span className="ml-2">PE</span> {/* Placeholder initials */}
+                  </Button>
+                </Link>
               </>
             ) : (
               <Link href="/auth/login">
