@@ -7,17 +7,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
 import { Lock } from "lucide-react"
-import Header from "@/components/layout/Header" // Assuming a global header, adjust if specific needed
-import Footer from "@/components/layout/Footer" // Assuming a global footer
+import Header from "@/components/layout/Header"
+import Footer from "@/components/layout/Footer"
 
 const userProfile = {
   initials: "PE",
-  name: "Patrik Engblad", // Example name
+  name: "Patrik Engblad",
   level: 1,
   levelName: "Bit",
   pointsToNextLevel: 6,
-  currentProgress: 30, // Example progress percentage
-  joinDate: "Jun 6th 2025", // Example date
+  currentProgress: 30,
+  joinDate: "Jun 6th 2025",
 }
 
 const levels = [
@@ -71,7 +71,14 @@ const leaderboardData = {
   ],
 }
 
-const LeaderboardList = ({ title, data }: { title: string;  typeof leaderboardData.sevenDay }) => (
+type LeaderboardMember = {
+  rank: number
+  name: string
+  points: string
+  avatar: string
+}
+
+const LeaderboardList = ({ title, data }: { title: string; data: LeaderboardMember[] }) => (
   <Card>
     <CardHeader>
       <CardTitle className="text-lg font-semibold">{title}</CardTitle>
