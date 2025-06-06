@@ -1,14 +1,13 @@
-
 import React, { useState } from "react"
 import Head from "next/head"
-import { useRouter } from "next/router"
-import { Search, MessageCircle, Bell, User, Heart, MessageSquare, MoreHorizontal, Pin } from "lucide-react" // Removed Share
+// import { useRouter } from "next/router" // Removed unused import
+import { Search, MessageCircle, Bell, User, Heart, MessageSquare, MoreHorizontal, Pin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs" // Removed TabsContent
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const communityData = {
   id: 1,
