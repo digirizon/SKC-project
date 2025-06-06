@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import Link from "next/link"
-import { ChevronDown, User } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import NotificationsDropdown from "@/components/ui/dropdown-notifications"
 import ChatsDropdown from "@/components/ui/dropdown-chats"
+import ProfileDropdown from "@/components/ui/dropdown-profile"
 
 export default function Header() {
   const [isLoggedIn] = useState(true) // Set to true for testing profile link and dropdowns
@@ -43,12 +44,7 @@ export default function Header() {
               <>
                 <ChatsDropdown />
                 <NotificationsDropdown />
-                <Link href="/profile">
-                  <Button variant="ghost" size="sm" className="flex items-center">
-                    <User className="w-5 h-5" />
-                    <span className="ml-2">PE</span> {/* Placeholder initials */}
-                  </Button>
-                </Link>
+                <ProfileDropdown />
               </>
             ) : (
               <Link href="/auth/login">

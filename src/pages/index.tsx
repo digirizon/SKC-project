@@ -108,7 +108,7 @@ export default function Home() {
             </h1>
             <p className="text-lg text-gray-600 mb-8">
               or{" "}
-              <Link href="/create" className="text-blue-600 hover:text-blue-700 underline">
+              <Link href="/auth/signup" className="text-blue-600 hover:text-blue-700 underline">
                 create your own
               </Link>
             </p>
