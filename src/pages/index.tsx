@@ -1,11 +1,10 @@
-
 import React, { useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
-import { Search, ChevronDown } from "lucide-react"
+import { Search } from "lucide-react" // Removed ChevronDown
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
+// import { Badge } from "@/components/ui/badge" // Removed Badge as it's not used on this page
 import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
 import CommunityCard from "@/components/community/CommunityCard"

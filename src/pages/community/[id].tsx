@@ -2,13 +2,13 @@
 import React, { useState } from "react"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { Search, MessageCircle, Bell, User, Heart, MessageSquare, Share, MoreHorizontal, Pin } from "lucide-react"
+import { Search, MessageCircle, Bell, User, Heart, MessageSquare, MoreHorizontal, Pin } from "lucide-react" // Removed Share
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs" // Removed TabsContent
 
 const communityData = {
   id: 1,
@@ -105,7 +105,7 @@ const leaderboard = [
 
 export default function CommunityDetails() {
   const router = useRouter()
-  const { id } = router.query
+  // const { id } = router.query // Removed unused id variable
   const [activeTab, setActiveTab] = useState("Community")
 
   return (

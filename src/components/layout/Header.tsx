@@ -1,11 +1,10 @@
-
 import React, { useState } from "react"
 import Link from "next/link"
 import { ChevronDown, MessageCircle, Bell, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn] = useState(false) // Removed setIsLoggedIn as it's not used
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
