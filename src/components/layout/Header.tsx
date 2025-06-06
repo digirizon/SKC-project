@@ -1,4 +1,3 @@
-
 import React, { useState } from "react"
 import Link from "next/link"
 import { ChevronDown } from "lucide-react"
@@ -9,13 +8,18 @@ import ProfileDropdown from "@/components/ui/dropdown-profile"
 import AuthModal from "@/components/auth/AuthModal"
 
 export default function Header() {
-  const [isLoggedIn] = useState(false) // Changed to false - only show dropdowns when logged in
+  const [isLoggedIn, setIsLoggedIn] = useState(false) // Allow state changes
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("login")
 
   const handleAuthClick = (mode: "login" | "signup") => {
     setAuthMode(mode)
     setAuthModalOpen(true)
+  }
+
+  const handleAuthSuccess = () => {
+    setIsLoggedIn(true)
+    setAuthModalOpen(false)
   }
 
   return (
@@ -72,6 +76,7 @@ export default function Header() {
         onClose={() => setAuthModalOpen(false)}
         mode={authMode}
         onSwitchMode={setAuthMode}
+        onSuccess={handleAuthSuccess}
       />
     </>
   )
