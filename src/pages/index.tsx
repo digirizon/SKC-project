@@ -1,13 +1,12 @@
 import React, { useState } from "react"
 import Head from "next/head"
-import Link from "next/link"
-import { Search } from "lucide-react" // Removed ChevronDown
+import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-// import { Badge } from "@/components/ui/badge" // Removed Badge as it's not used on this page
 import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
 import CommunityCard from "@/components/community/CommunityCard"
+import AuthModal from "@/components/auth/AuthModal"
 
 const categories = [
   { name: "All", active: true },
@@ -88,6 +87,13 @@ const communities = [
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
+  const [authModalOpen, setAuthModalOpen] = useState(false)
+  const [authMode, setAuthMode] = useState<"login" | "signup">("signup")
+
+  const handleCreateYourOwn = () => {
+    setAuthMode("signup")
+    setAuthModalOpen(true)
+  }
 
   return (
     <>
@@ -101,19 +107,20 @@ export default function Home() {
         <Header />
         
         <main className="max-w-7xl mx-auto px-4 py-8">
-          {/* Hero Section */}
           <div className="text-center mb-12">
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
               Discover communities
             </h1>
             <p className="text-lg text-gray-600 mb-8">
               or{" "}
-              <Link href="/auth/signup" className="text-blue-600 hover:text-blue-700 underline">
+              <button 
+                onClick={handleCreateYourOwn}
+                className="text-blue-600 hover:text-blue-700 underline cursor-pointer"
+              >
                 create your own
-              </Link>
+              </button>
             </p>
 
-            {/* Search Bar */}
             <div className="max-w-2xl mx-auto relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <Input
@@ -126,7 +133,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Category Filter */}
           <div className="flex flex-wrap gap-3 mb-8 justify-center">
             {categories.map((category) => (
               <Button
@@ -145,14 +151,12 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Communities Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {communities.map((community) => (
               <CommunityCard key={community.id} community={community} />
             ))}
           </div>
 
-          {/* Pagination */}
           <div className="flex justify-center items-center gap-4">
             <Button variant="ghost" className="text-gray-500">
               ← Previous
@@ -186,6 +190,13 @@ export default function Home() {
 
         <Footer />
       </div>
+
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        mode={authMode}
+        onSwitchMode={setAuthMode}
+      />
     </>
   )
 }
