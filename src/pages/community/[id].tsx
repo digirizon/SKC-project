@@ -104,8 +104,7 @@ const leaderboard = [
 ]
 
 export default function CommunityDetails() {
-  const router = useRouter()
-  // const { id } = router.query // Removed unused id variable
+  // const router = useRouter() // Removed unused router variable
   const [activeTab, setActiveTab] = useState("Community")
 
   return (
