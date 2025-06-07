@@ -22,9 +22,9 @@ const categories = [
   { name: "More...", active: false }
 ]
 
-const communities = [
+export const communities = [
   {
-    id: 1,
+    id: "1",
     rank: "#1",
     title: "Calligraphy 3rdHub",
     description: "Learn modern calligraphy the fun, easy way! ✏️ With sisters Jordan & Jillian",
@@ -35,7 +35,7 @@ const communities = [
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces"
   },
   {
-    id: 2,
+    id: "2",
     rank: "#2",
     title: "Zero To Founder by Tom Bilyeu",
     description: "Level up your business and get on the path to financial freedom with billion-dollar founder Tom Bilyeu.",
@@ -46,7 +46,7 @@ const communities = [
     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=faces"
   },
   {
-    id: 3,
+    id: "3",
     rank: "#3",
     title: "Brotherhood Of Scent",
     description: "#1 Fragrance Community 🧔 Our mission is to help YOU leverage the power of scent to become the man you know yourself to...",
@@ -57,7 +57,7 @@ const communities = [
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces"
   },
   {
-    id: 4,
+    id: "4",
     rank: "#28",
     title: "Kickstarter Challenge",
     description: "Welcome! Ready to start losing weight in 2025 with massive piles of plant based food? Let's go!!",
@@ -68,7 +68,7 @@ const communities = [
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces"
   },
   {
-    id: 5,
+    id: "5",
     rank: "#29",
     title: "AI Automation Society",
     description: "A community for mastering AI-driven automation and AI agents. Learn, collaborate, and optimize your workflows!",
@@ -79,7 +79,7 @@ const communities = [
     avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&h=80&fit=crop&crop=faces"
   },
   {
-    id: 6,
+    id: "6",
     rank: "#30",
     title: "Snipe University",
     description: "Get a PhD in Sneaker Reselling 😷 👟",
@@ -88,6 +88,17 @@ const communities = [
     image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=800&h=400&fit=crop",
     category: "Money",
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=faces"
+  },
+  { // Added RoboNuggets to ensure posts can be seen
+    id: "550e8400-e29b-41d4-a716-446655440007",
+    rank: "#7",
+    title: "The RoboNuggets Network (free)",
+    description: "Making AI connections easy 🤖. Join us for free!",
+    members: "2k Members",
+    price: "Free",
+    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=400&fit=crop", // Example AI image
+    category: "Tech",
+    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&h=80&fit=crop&crop=faces" // Re-using an avatar
   }
 ]
 
