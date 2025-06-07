@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, Search } from "lucide-react";
@@ -5,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-// Import dropdown components - Fixed import paths
+// Import dropdown components with correct paths
 import ChatsDropdown from "@/components/ui/dropdown-chats"; 
 import NotificationsDropdown from "@/components/ui/dropdown-notifications";
 import ProfileDropdown from "@/components/ui/dropdown-profile";
@@ -67,6 +68,16 @@ export default function Header({
               {showCommunityHeader && isLoggedIn ? (
                 // Community header with logo, search, and community info
                 <>
+                  {/* 3rdHub Logo */}
+                  <Link href="/" className="flex items-center space-x-2 mr-4">
+                    <div className="text-xl font-bold">
+                      <span className="text-blue-500">3rd</span>
+                      <span className="text-orange-500">H</span>
+                      <span className="text-green-500">u</span>
+                      <span className="text-purple-500">b</span>
+                    </div>
+                  </Link>
+                  
                   {communityImage ? (
                     <Avatar className="w-8 h-8 rounded-md">
                       <AvatarImage src={communityImage} alt={communityName || "Community"} />
