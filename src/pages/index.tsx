@@ -24,7 +24,7 @@ const categories = [
 
 export const communities = [
   {
-    id: "1",
+    id: "11111111-1111-1111-1111-111111111111",
     rank: "#1",
     title: "Calligraphy 3rdHub",
     description: "Learn modern calligraphy the fun, easy way! ✏️ With sisters Jordan & Jillian",
@@ -35,7 +35,7 @@ export const communities = [
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces"
   },
   {
-    id: "2",
+    id: "22222222-2222-2222-2222-222222222222",
     rank: "#2",
     title: "Zero To Founder by Tom Bilyeu",
     description: "Level up your business and get on the path to financial freedom with billion-dollar founder Tom Bilyeu.",
@@ -46,7 +46,7 @@ export const communities = [
     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=faces"
   },
   {
-    id: "3",
+    id: "33333333-3333-3333-3333-333333333333",
     rank: "#3",
     title: "Brotherhood Of Scent",
     description: "#1 Fragrance Community 🧔 Our mission is to help YOU leverage the power of scent to become the man you know yourself to...",
@@ -57,7 +57,7 @@ export const communities = [
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces"
   },
   {
-    id: "4",
+    id: "44444444-4444-4444-4444-444444444444",
     rank: "#28",
     title: "Kickstarter Challenge",
     description: "Welcome! Ready to start losing weight in 2025 with massive piles of plant based food? Let's go!!",
@@ -68,7 +68,7 @@ export const communities = [
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces"
   },
   {
-    id: "5",
+    id: "55555555-5555-5555-5555-555555555555",
     rank: "#29",
     title: "AI Automation Society",
     description: "A community for mastering AI-driven automation and AI agents. Learn, collaborate, and optimize your workflows!",
@@ -79,7 +79,7 @@ export const communities = [
     avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&h=80&fit=crop&crop=faces"
   },
   {
-    id: "6",
+    id: "66666666-6666-6666-6666-666666666666",
     rank: "#30",
     title: "Snipe University",
     description: "Get a PhD in Sneaker Reselling 😷 👟",
