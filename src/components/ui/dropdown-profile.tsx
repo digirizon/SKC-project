@@ -1,6 +1,7 @@
 
 import React from "react"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { User, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,7 +12,23 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 
-export default function ProfileDropdown() {
+interface ProfileDropdownProps {
+  onLogout: () => void
+  userEmail: string
+}
+
+export default function ProfileDropdown({ onLogout, userEmail }: ProfileDropdownProps) {
+  const router = useRouter()
+
+  const handleLogout = () => {
+    onLogout()
+    router.push("/")
+  }
+
+  const handleNavigation = (path: string) => {
+    router.push(path)
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,18 +39,17 @@ export default function ProfileDropdown() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-64 p-0" align="end">
         <div className="bg-white rounded-lg shadow-lg border">
-          {/* User Email */}
           <div className="p-4 border-b">
-            <p className="text-lg font-semibold text-gray-900">digirizon@gmail.com</p>
+            <p className="text-lg font-semibold text-gray-900">{userEmail || "digirizon@gmail.com"}</p>
           </div>
 
-          {/* Menu Items */}
           <div className="py-2">
-            <Link href="/profile">
-              <DropdownMenuItem className="px-4 py-3 text-lg font-semibold text-gray-900 hover:bg-gray-50 cursor-pointer">
-                Profile
-              </DropdownMenuItem>
-            </Link>
+            <DropdownMenuItem 
+              className="px-4 py-3 text-lg font-semibold text-gray-900 hover:bg-gray-50 cursor-pointer"
+              onClick={() => handleNavigation("/profile")}
+            >
+              Profile
+            </DropdownMenuItem>
             
             <DropdownMenuItem className="px-4 py-3 text-lg font-semibold text-gray-900 hover:bg-gray-50 cursor-pointer">
               Settings
@@ -46,7 +62,6 @@ export default function ProfileDropdown() {
 
           <DropdownMenuSeparator />
 
-          {/* Secondary Menu Items */}
           <div className="py-2">
             <DropdownMenuItem className="px-4 py-3 text-lg text-gray-500 hover:bg-gray-50 cursor-pointer">
               Help center
@@ -56,16 +71,21 @@ export default function ProfileDropdown() {
               Create a community
             </DropdownMenuItem>
             
-            <DropdownMenuItem className="px-4 py-3 text-lg text-gray-500 hover:bg-gray-50 cursor-pointer">
+            <DropdownMenuItem 
+              className="px-4 py-3 text-lg text-gray-500 hover:bg-gray-50 cursor-pointer"
+              onClick={() => handleNavigation("/")}
+            >
               Discover communities
             </DropdownMenuItem>
           </div>
 
           <DropdownMenuSeparator />
 
-          {/* Logout */}
           <div className="py-2">
-            <DropdownMenuItem className="px-4 py-3 text-lg text-gray-500 hover:bg-gray-50 cursor-pointer">
+            <DropdownMenuItem 
+              className="px-4 py-3 text-lg text-gray-500 hover:bg-gray-50 cursor-pointer"
+              onClick={handleLogout}
+            >
               <LogOut className="w-4 h-4 mr-2" />
               Log out
             </DropdownMenuItem>

@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+
+import React, { useState, createContext, useContext } from "react"
 import Head from "next/head"
 import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -7,6 +8,20 @@ import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
 import CommunityCard from "@/components/community/CommunityCard"
 import AuthModal from "@/components/auth/AuthModal"
+
+interface AuthContextType {
+  isLoggedIn: boolean
+  setIsLoggedIn: (value: boolean) => void
+  userEmail: string
+  setUserEmail: (value: string) => void
+}
+
+export const AuthContext = createContext<AuthContextType>({
+  isLoggedIn: false,
+  setIsLoggedIn: () => {},
+  userEmail: "",
+  setUserEmail: () => {}
+})
 
 const categories = [
   { name: "All", active: true },
@@ -95,14 +110,27 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("signup")
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [userEmail, setUserEmail] = useState("")
 
   const handleCreateYourOwn = () => {
     setAuthMode("signup")
     setAuthModalOpen(true)
   }
 
+  const handleAuthSuccess = (email: string) => {
+    setIsLoggedIn(true)
+    setUserEmail(email)
+    setAuthModalOpen(false)
+  }
+
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+    setUserEmail("")
+  }
+
   return (
-    <>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userEmail, setUserEmail }}>
       <Head>
         <title>3rdHub - Discover communities</title>
         <meta name="description" content="Discover communities or create your own on 3rdHub" />
@@ -110,7 +138,7 @@ export default function Home() {
       </Head>
 
       <div className="min-h-screen bg-gray-50">
-        <Header />
+        <Header onLogout={handleLogout} />
         
         <main className="max-w-7xl mx-auto px-4 py-8">
           <div className="text-center mb-12">
@@ -202,7 +230,8 @@ export default function Home() {
         onClose={() => setAuthModalOpen(false)}
         mode={authMode}
         onSwitchMode={setAuthMode}
+        onSuccess={handleAuthSuccess}
       />
-    </>
+    </AuthContext.Provider>
   )
 }

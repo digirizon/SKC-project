@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+
+import React, { useState, useContext } from "react"
 import Link from "next/link"
 import { ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -6,9 +7,14 @@ import NotificationsDropdown from "@/components/ui/dropdown-notifications"
 import ChatsDropdown from "@/components/ui/dropdown-chats"
 import ProfileDropdown from "@/components/ui/dropdown-profile"
 import AuthModal from "@/components/auth/AuthModal"
+import { AuthContext } from "@/pages/index"
 
-export default function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false) // Allow state changes
+interface HeaderProps {
+  onLogout?: () => void
+}
+
+export default function Header({ onLogout }: HeaderProps) {
+  const { isLoggedIn, setIsLoggedIn, userEmail, setUserEmail } = useContext(AuthContext)
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("login")
 
@@ -17,9 +23,16 @@ export default function Header() {
     setAuthModalOpen(true)
   }
 
-  const handleAuthSuccess = () => {
+  const handleAuthSuccess = (email: string) => {
     setIsLoggedIn(true)
+    setUserEmail(email)
     setAuthModalOpen(false)
+  }
+
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+    setUserEmail("")
+    if (onLogout) onLogout()
   }
 
   return (
@@ -55,7 +68,7 @@ export default function Header() {
                 <>
                   <ChatsDropdown />
                   <NotificationsDropdown />
-                  <ProfileDropdown />
+                  <ProfileDropdown onLogout={handleLogout} userEmail={userEmail} />
                 </>
               ) : (
                 <Button 
