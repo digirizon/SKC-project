@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from "react"
 import Head from "next/head"
 import { useRouter } from "next/router"
@@ -84,7 +83,14 @@ export default function CommunityDetailsPage() {
     if (!communityId) return;
     try {
       setLoadingPosts(true);
+      console.log("Loading posts for community:", communityId, "with user:", user?.id);
+      
+      // Check current session first
+      const session = await authService.getCurrentSession();
+      console.log("Current session:", session?.user?.email);
+      
       const fetchedPosts = await postService.getPosts(communityId, user?.id);
+      console.log("Fetched posts:", fetchedPosts);
       setPosts(fetchedPosts);
     } catch (error) {
       console.error("Error loading posts:", error);
