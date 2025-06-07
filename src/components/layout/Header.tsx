@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-// Import dropdown components
+// Import dropdown components - Fixed import paths
 import ChatsDropdown from "@/components/ui/dropdown-chats"; 
 import NotificationsDropdown from "@/components/ui/dropdown-notifications";
 import ProfileDropdown from "@/components/ui/dropdown-profile";
