@@ -18,12 +18,12 @@ const communityData = {
   online: "30",
   admin: "1",
   memberAvatars: [
-    "/api/placeholder/32/32",
-    "/api/placeholder/32/32",
-    "/api/placeholder/32/32",
-    "/api/placeholder/32/32",
-    "/api/placeholder/32/32",
-    "/api/placeholder/32/32"
+    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=32&h=32&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=32&h=32&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=32&h=32&fit=crop&crop=faces"
   ]
 }
 
@@ -31,7 +31,7 @@ const posts = [
   {
     id: 1,
     author: "Jay E",
-    authorAvatar: "/api/placeholder/40/40",
+    authorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=faces",
     timestamp: "Dec 24",
     category: "Introduce Yourself",
     title: "Welcome to The RoboNuggets Network 🤖",
@@ -44,7 +44,7 @@ const posts = [
   {
     id: 2,
     author: "Jay E",
-    authorAvatar: "/api/placeholder/40/40",
+    authorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=faces",
     timestamp: "Dec 24",
     category: "Nuggets & Tips",
     title: "Bonus lesson (n5) - The 1 Method you should know to win AI ...",
@@ -58,7 +58,7 @@ const posts = [
   {
     id: 3,
     author: "Jay E",
-    authorAvatar: "/api/placeholder/40/40",
+    authorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=faces",
     timestamp: "Dec 24",
     category: "Announcements",
     title: "The Ultimate Publishing Agent - 9 Socials in 1! (n8n no-code)...",
@@ -72,7 +72,7 @@ const posts = [
   {
     id: 4,
     author: "Cheeto Burrito",
-    authorAvatar: "/api/placeholder/40/40",
+    authorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=faces",
     timestamp: "7d",
     category: "Introduce Yourself",
     title: "Can you make profit off AI without spending a penny?",
@@ -84,7 +84,7 @@ const posts = [
   {
     id: 5,
     author: "N M",
-    authorAvatar: "/api/placeholder/40/40",
+    authorAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop&crop=faces",
     timestamp: "7d",
     category: "General discussion",
     title: "Expression Inside Message Model",
@@ -95,11 +95,11 @@ const posts = [
 ]
 
 const leaderboard = [
-  { rank: 1, name: "Cheeto Burrito", points: "+7", avatar: "/api/placeholder/32/32" },
-  { rank: 2, name: "Beno Curt", points: "+7", avatar: "/api/placeholder/32/32" },
-  { rank: 3, name: "Andy C", points: "+6", avatar: "/api/placeholder/32/32" },
-  { rank: 4, name: "Brian McCaffrey", points: "+5", avatar: "/api/placeholder/32/32" },
-  { rank: 5, name: "Mirko Baschek", points: "+5", avatar: "/api/placeholder/32/32" }
+  { rank: 1, name: "Cheeto Burrito", points: "+7", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=faces" },
+  { rank: 2, name: "Beno Curt", points: "+7", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=32&h=32&fit=crop&crop=faces" },
+  { rank: 3, name: "Andy C", points: "+6", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=faces" },
+  { rank: 4, name: "Brian McCaffrey", points: "+5", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=32&h=32&fit=crop&crop=faces" },
+  { rank: 5, name: "Mirko Baschek", points: "+5", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=faces" }
 ]
 
 export default function CommunityDetails() {
@@ -254,9 +254,13 @@ export default function CommunityDetails() {
                             </button>
                             <div className="flex items-center space-x-2">
                               <div className="flex -space-x-1">
-                                {[1, 2, 3].map((i) => (
+                                {[
+                                  "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=24&h=24&fit=crop&crop=faces",
+                                  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=24&h=24&fit=crop&crop=faces",
+                                  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=24&h=24&fit=crop&crop=faces"
+                                ].map((avatarUrl, i) => (
                                   <Avatar key={i} className="w-6 h-6 border-2 border-white">
-                                    <AvatarImage src={`/api/placeholder/24/24`} />
+                                    <AvatarImage src={avatarUrl} />
                                     <AvatarFallback className="text-xs">U</AvatarFallback>
                                   </Avatar>
                                 ))}

@@ -1,6 +1,5 @@
-
-import React, { useState, createContext, useContext } from "react"
-import Head from "next/head"
+import React, { useState, createContext } from "react"; // Removed useContext
+import Head from "next/head";
 import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"

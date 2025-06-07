@@ -1,7 +1,6 @@
-
-import React from "react"
-import Link from "next/link"
-import { useRouter } from "next/router"
+import React from "react";
+// Removed: import Link from "next/link";
+import { useRouter } from "next/router";
 import { User, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {

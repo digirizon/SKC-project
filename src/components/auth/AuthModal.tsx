@@ -6,11 +6,11 @@ import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
 interface AuthModalProps {
-  isOpen: boolean
-  onClose: () => void
-  mode: "login" | "signup"
-  onSwitchMode: (mode: "login" | "signup") => void
-  onSuccess?: () => void
+  isOpen: boolean;
+  onClose: () => void;
+  mode: "login" | "signup";
+  onSwitchMode: (mode: "login" | "signup") => void;
+  onSuccess?: (email: string) => void; // Changed to accept email
 }
 
 export default function AuthModal({ isOpen, onClose, mode, onSwitchMode, onSuccess }: AuthModalProps) {
@@ -36,7 +36,7 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode, onSucce
     setTimeout(() => {
       setIsLoading(false)
       if (onSuccess) {
-        onSuccess()
+        onSuccess(formData.email); // Pass email to onSuccess
       } else {
         onClose()
       }
@@ -45,9 +45,9 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode, onSucce
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-white z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-xl">
-        <div className="fixed inset-0 bg-black/50 z-40" />
-        <div className="relative z-50 bg-white rounded-lg p-6">
+      <DialogContent className="sm:max-w-md bg-white z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-xl p-0">
+        {/* Removed manual backdrop: <div className="fixed inset-0 bg-black/50 z-40" /> */}
+        <div className="relative bg-white rounded-lg p-6">
           <DialogHeader>
             <div className="flex items-center justify-between">
               <DialogTitle className="text-2xl font-bold text-gray-900">
