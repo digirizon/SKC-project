@@ -1,6 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { AuthResponse, Session } from "@supabase/supabase-js";
+import { AuthResponse, Session, Provider, AuthError, OAuthResponse } from "@supabase/supabase-js"; // Added Provider, AuthError, OAuthResponse for clarity, though AuthResponse should cover them.
 
 export const authService = {
   async signUp(email: string, password: string, name: string): Promise<AuthResponse> {
@@ -8,7 +8,7 @@ export const authService = {
       email,
       password,
       options: {
-        data: {
+         {
           full_name: name,
         },
       },
@@ -22,7 +22,8 @@ export const authService = {
     });
   },
 
-  async signInWithGoogle(): Promise<AuthResponse> {
+  // Changed: Removed explicit Promise<AuthResponse> to let TypeScript infer the more specific type
+  async signInWithGoogle() { 
     return supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -36,14 +37,14 @@ export const authService = {
     if (error) throw error;
   },
 
-  async getCurrentSession() {
-    const { data: { session }, error } = await supabase.auth.getSession();
+  async getCurrentSession(): Promise<Session | null> { // More specific return type
+    const {  { session }, error } = await supabase.auth.getSession();
     if (error) throw error;
     return session;
   },
 
-  async getCurrentUser() {
-    const { data: { user }, error } = await supabase.auth.getUser();
+  async getCurrentUser() { // Let TypeScript infer: Promise<User | null>
+    const {  { user }, error } = await supabase.auth.getUser();
     if (error) throw error;
     return user;
   },
