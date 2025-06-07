@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import Head from "next/head"
 // import { useRouter } from "next/router" // Removed unused import
 import { MessageSquare, Heart, MoreHorizontal, Pin } from "lucide-react" // Removed Bell, User, MessageCircle, Search as they are in Header or unused
