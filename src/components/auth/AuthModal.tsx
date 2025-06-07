@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import authService from "@/services/auth";
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   mode: "login" | "signup";
   onSwitchMode: (mode: "login" | "signup") => void;
-  onSuccess?: (email: string) => void; // Changed to accept email
+  onSuccess?: (email: string) => void;
 }
 
 export default function AuthModal({ isOpen, onClose, mode, onSwitchMode, onSuccess }: AuthModalProps) {
@@ -19,29 +20,46 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode, onSucce
     email: "",
     password: "",
     confirmPassword: ""
-  })
-  const [isLoading, setIsLoading] = useState(false)
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
-    })
-  }
+    });
+    setError(null);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
-    setTimeout(() => {
-      setIsLoading(false)
-      if (onSuccess) {
-        onSuccess(formData.email); // Pass email to onSuccess
+    try {
+      if (mode === "signup") {
+        if (formData.password !== formData.confirmPassword) {
+          throw new Error("Passwords do not match");
+        }
+        const { data } = await authService.signUp(formData.email, formData.password, formData.name);
+        if (data.user) {
+          onSuccess?.(data.user.email || formData.email);
+          onClose();
+        }
       } else {
-        onClose()
+        const { data } = await authService.signIn(formData.email, formData.password);
+        if (data.user) {
+          onSuccess?.(data.user.email);
+          onClose();
+        }
       }
-    }, 1000)
-  }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -197,6 +215,14 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode, onSucce
             <div className="mt-4 p-3 bg-blue-50 rounded-lg">
               <p className="text-sm text-blue-800">
                 <strong>Demo:</strong> Use any email with any password to test login.
+              </p>
+            </div>
+          )}
+
+          {error && (
+            <div className="mt-4 p-3 bg-red-50 rounded-lg">
+              <p className="text-sm text-red-800">
+                {error}
               </p>
             </div>
           )}
