@@ -10,9 +10,10 @@ import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
 import { useAuth } from "@/contexts/AuthContext"
 import { postService, Post } from "@/services/postService"
+import authService from "@/services/auth"
 import { communities as homepageCommunities } from "@/pages/index" 
 import CreatePostModal from "@/components/community/CreatePostModal"
-import AuthModal from "@/components/auth/AuthModal"; // Added AuthModal import
+import AuthModal from "@/components/auth/AuthModal"
 
 interface CommunityDetailsData {
   id: string;
