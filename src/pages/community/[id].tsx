@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import Head from "next/head"
 // import { useRouter } from "next/router" // Removed unused import
-import { Search, MessageSquare, Heart, MoreHorizontal, Pin } from "lucide-react" // Removed Bell, User, MessageCircle as they are in Header
+import { MessageSquare, Heart, MoreHorizontal, Pin } from "lucide-react" // Removed Bell, User, MessageCircle, Search as they are in Header or unused
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
