@@ -3,15 +3,36 @@ import { AuthResponse, Session, User, AuthError, OAuthResponse } from "@supabase
 
 export const authService = {
   async signUp(email: string, password: string, name: string): Promise<AuthResponse> {
-    return supabase.auth.signUp({
+    const authResponse = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
           full_name: name,
+          // You can add other metadata here if needed, like a default avatar_url
+          // avatar_url: 'https://example.com/default-avatar.png', 
         },
       },
     });
+
+    if (authResponse.data.user && !authResponse.error) {
+      // User created in auth, now create a profile
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .insert({ 
+          id: authResponse.data.user.id, 
+          full_name: name,
+          // username: name.toLowerCase().replace(/\s+/g, '_'), // Example username generation
+          // avatar_url: authResponse.data.user.user_metadata.avatar_url || 'URL_TO_DEFAULT_AVATAR'
+        });
+
+      if (profileError) {
+        console.error("Error creating profile after signup:", profileError);
+        // Potentially handle this error, e.g., by informing the user or attempting cleanup
+        // For now, we'll just log it. The auth signup itself was successful.
+      }
+    }
+    return authResponse;
   },
 
   async signIn(email: string, password: string): Promise<AuthResponse> {

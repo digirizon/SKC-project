@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog"; // Removed DialogFooter
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"; // Removed DialogClose
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Paperclip, Link2, Youtube, BarChart2, Smile, Gift, ChevronDown } from "lucide-react"; // Changed Gif to Gift, removed AtSign
+import { Paperclip, Link2, Youtube, BarChart2, Smile, ChevronDown } from "lucide-react";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -30,7 +30,6 @@ export default function CreatePostModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim()) {
-      // Optionally show an error that content is required
       return;
     }
     setIsSubmitting(true);
@@ -40,64 +39,104 @@ export default function CreatePostModal({
       setTitle("");
       setContent("");
       onClose();
-    } else {
-      // Optionally show an error message to the user
-      alert("Failed to create post. Please try again.");
     }
   };
 
+  const handleClose = () => {
+    setTitle("");
+    setContent("");
+    onClose();
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] p-0">
-        <DialogHeader className="p-6 pb-4 border-b">
-          <div className="flex items-center space-x-2">
-            <Avatar className="w-8 h-8">
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-[800px] p-0 bg-white">
+        {/* Header */}
+        <DialogHeader className="p-6 pb-4">
+          <div className="flex items-center space-x-3">
+            <Avatar className="w-10 h-10">
               <AvatarImage src={userAvatarUrl} />
-              <AvatarFallback>{userName?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
+              <AvatarFallback className="bg-gray-800 text-white font-bold">
+                {userName?.split(' ').map(n => n[0]).join('') || "U"}
+              </AvatarFallback>
             </Avatar>
             <div>
-              <DialogTitle className="text-md font-normal">
-                {userName || "You"} posting in{" "}
+              <DialogTitle className="text-lg font-normal text-gray-900">
+                <span className="font-semibold">{userName || "A N"}</span> posting in{" "}
                 <span className="font-semibold">{communityName}</span>
               </DialogTitle>
             </div>
           </div>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="p-6 space-y-4">
+
+        <form onSubmit={handleSubmit} className="flex flex-col h-full">
+          {/* Content Area */}
+          <div className="px-6 flex-1">
+            {/* Title Input */}
             <Input
-              placeholder="Title (optional)"
+              placeholder="Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="text-lg border-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-0 placeholder:text-gray-400"
+              className="text-2xl font-normal border-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-0 mb-4 placeholder:text-gray-400 placeholder:font-normal"
             />
+            
+            {/* Content Textarea */}
             <Textarea
               placeholder="Write something..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="min-h-[120px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-0 placeholder:text-gray-400"
+              className="min-h-[200px] text-lg border-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-0 resize-none placeholder:text-gray-400"
               required
             />
           </div>
-          <div className="px-6 py-4 border-t flex justify-between items-center">
-            <div className="flex items-center space-x-2 text-gray-500">
-              <Button variant="ghost" size="icon" type="button" className="hover:bg-gray-100"><Paperclip className="w-5 h-5" /></Button>
-              <Button variant="ghost" size="icon" type="button" className="hover:bg-gray-100"><Link2 className="w-5 h-5" /></Button>
-              <Button variant="ghost" size="icon" type="button" className="hover:bg-gray-100"><Youtube className="w-5 h-5" /></Button>
-              <Button variant="ghost" size="icon" type="button" className="hover:bg-gray-100"><BarChart2 className="w-5 h-5" /></Button>
-              <Button variant="ghost" size="icon" type="button" className="hover:bg-gray-100"><Smile className="w-5 h-5" /></Button>
-              <Button variant="ghost" size="icon" type="button" className="hover:bg-gray-100"><Gift className="w-5 h-5" /></Button>
-              <Button variant="ghost" size="sm" type="button" className="hover:bg-gray-100 text-gray-500">
-                Select a category <ChevronDown className="w-4 h-4 ml-1" />
-              </Button>
-            </div>
-            <div className="flex items-center space-x-2">
-              <DialogClose asChild>
-                <Button variant="ghost" type="button" disabled={isSubmitting}>Cancel</Button>
-              </DialogClose>
-              <Button type="submit" disabled={!content.trim() || isSubmitting} className="bg-gray-800 hover:bg-gray-900">
-                {isSubmitting ? "Posting..." : "POST"}
-              </Button>
+
+          {/* Footer with tools and buttons */}
+          <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
+            <div className="flex justify-between items-center">
+              {/* Left side tools */}
+              <div className="flex items-center space-x-1">
+                <Button variant="ghost" size="icon" type="button" className="w-10 h-10 text-gray-500 hover:bg-gray-200">
+                  <Paperclip className="w-5 h-5" />
+                </Button>
+                <Button variant="ghost" size="icon" type="button" className="w-10 h-10 text-gray-500 hover:bg-gray-200">
+                  <Link2 className="w-5 h-5" />
+                </Button>
+                <Button variant="ghost" size="icon" type="button" className="w-10 h-10 text-gray-500 hover:bg-gray-200">
+                  <Youtube className="w-5 h-5" />
+                </Button>
+                <Button variant="ghost" size="icon" type="button" className="w-10 h-10 text-gray-500 hover:bg-gray-200">
+                  <BarChart2 className="w-5 h-5" />
+                </Button>
+                <Button variant="ghost" size="icon" type="button" className="w-10 h-10 text-gray-500 hover:bg-gray-200">
+                  <Smile className="w-5 h-5" />
+                </Button>
+                <div className="text-2xl">🎁</div>
+                
+                {/* Category Selector */}
+                <Button variant="ghost" type="button" className="text-gray-500 hover:bg-gray-200 ml-4">
+                  Select a category <ChevronDown className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
+
+              {/* Right side buttons */}
+              <div className="flex items-center space-x-3">
+                <Button 
+                  variant="ghost" 
+                  type="button" 
+                  onClick={handleClose}
+                  disabled={isSubmitting}
+                  className="text-gray-600 hover:text-gray-800"
+                >
+                  CANCEL
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={!content.trim() || isSubmitting} 
+                  className="bg-gray-800 hover:bg-gray-900 text-white px-8"
+                >
+                  {isSubmitting ? "POSTING..." : "POST"}
+                </Button>
+              </div>
             </div>
           </div>
         </form>

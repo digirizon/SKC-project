@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react"; // Keep Search, Input if used by LogoDropdown or other parts
+import { ChevronDown, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input"; // Removed if not directly used
-// import { Search } from "lucide-react"; // Removed if not directly used
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"; // Added Avatar imports
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-// Assuming these are the correct paths for your custom dropdown components
+// Import dropdown components
 import ChatsDropdown from "@/components/ui/dropdown-chats"; 
 import NotificationsDropdown from "@/components/ui/dropdown-notifications";
 import ProfileDropdown from "@/components/ui/dropdown-profile";
-// import LogoDropdown from "./LogoDropdown"; // Keep if LogoDropdown is used when not logged in
+import LogoDropdown from "./LogoDropdown";
 
 import AuthModal from "@/components/auth/AuthModal"; 
 import authService from "@/services/auth"; 
@@ -26,18 +25,18 @@ interface HeaderProps {
 }
 
 export default function Header({ 
-  onLogout, // This prop is passed to ProfileDropdown
+  onLogout,
   showCommunityHeader = false, 
   communityName, 
   communityIcon,
   communityImage 
 }: HeaderProps) {
-  const { isLoggedIn, setIsLoggedIn, setUserEmail, userEmail } = useAuth(); // Removed unused 'user'
+  const { isLoggedIn, setIsLoggedIn, setUserEmail, userEmail } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
   const router = useRouter();
 
-  const handleAuthClick = (mode: "login" | "signup") => { // Added mode parameter
+  const handleAuthClick = (mode: "login" | "signup") => {
     setAuthMode(mode);
     setAuthModalOpen(true);
   };
@@ -46,15 +45,14 @@ export default function Header({
     setIsLoggedIn(true);
     setUserEmail(email);
     setAuthModalOpen(false);
-    // Potentially call user.reload() or re-fetch user data if needed
   };
 
-  const handleInternalLogout = async () => { // Renamed to avoid conflict if onLogout is also named handleLogout
+  const handleInternalLogout = async () => {
     await authService.signOut();
     setIsLoggedIn(false);
     setUserEmail("");
     if (onLogout) {
-      onLogout(); // Call the passed onLogout prop
+      onLogout();
     }
     router.push("/"); 
   };
@@ -64,10 +62,11 @@ export default function Header({
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
+            {/* Left side - Logo and Community Header */}
             <div className="flex items-center space-x-4">
-              {/* Community Header Content */}
-              {showCommunityHeader && isLoggedIn && (
-                <div className="flex items-center space-x-3">
+              {showCommunityHeader && isLoggedIn ? (
+                // Community header with logo, search, and community info
+                <>
                   {communityImage ? (
                     <Avatar className="w-8 h-8 rounded-md">
                       <AvatarImage src={communityImage} alt={communityName || "Community"} />
@@ -80,13 +79,35 @@ export default function Header({
                   )}
                   <span className="font-semibold text-gray-800">{communityName}</span>
                   <ChevronDown className="w-4 h-4 text-gray-500" />
+                  
+                  {/* Search bar for community pages */}
+                  <div className="relative ml-8">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <Input
+                      type="text"
+                      placeholder="Search"
+                      className="pl-10 w-80 bg-gray-100 border-0 focus-visible:ring-1 focus-visible:ring-gray-300"
+                    />
+                  </div>
+                </>
+              ) : (
+                // Regular header with 3rdHub logo
+                <div className="flex items-center space-x-2">
+                  <Link href="/" className="flex items-center space-x-2">
+                    <div className="text-2xl font-bold">
+                      <span className="text-blue-500">3rd</span>
+                      <span className="text-orange-500">H</span>
+                      <span className="text-green-500">u</span>
+                      <span className="text-purple-500">b</span>
+                    </div>
+                  </Link>
+                  {!isLoggedIn && <LogoDropdown onTriggerAuthModal={handleAuthClick} />}
                 </div>
               )}
+            </div>
 
-              {/* Spacer to push right content */}
-              <div className="flex-grow"></div>
-
-              {/* Right side content */}
+            {/* Right side content */}
+            <div className="flex items-center space-x-4">
               {isLoggedIn ? (
                 <>
                   <ChatsDropdown />
@@ -97,7 +118,7 @@ export default function Header({
                 <Button
                   variant="ghost"
                   className="text-gray-700 hover:text-gray-900 cursor-pointer"
-                  onClick={() => handleAuthClick("login")} // Corrected: Call handleAuthClick
+                  onClick={() => handleAuthClick("login")}
                   type="button"
                 >
                   LOG IN
