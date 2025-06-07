@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 export interface Post {
@@ -30,7 +29,7 @@ export interface PostLike {
 
 export const postService = {
   async getPosts(communityId: string, userId?: string): Promise<Post[]> {
-    let query = supabase
+    const { data: posts, error } = await supabase
       .from('posts')
       .select(`
         *,
@@ -42,8 +41,6 @@ export const postService = {
       `)
       .eq('community_id', communityId)
       .order('created_at', { ascending: false });
-
-    const { data: posts, error } = await query;
     
     if (error) {
       console.error('Error fetching posts:', error);
@@ -54,23 +51,23 @@ export const postService = {
 
     // Check if user has liked each post
     if (userId) {
-      const postIds = posts.map(post => post.id);
+      const postIds = posts.map((post: any) => post.id);
       const { data: likes } = await supabase
         .from('post_likes')
         .select('post_id')
         .eq('user_id', userId)
         .in('post_id', postIds);
 
-      const likedPostIds = new Set(likes?.map(like => like.post_id) || []);
+      const likedPostIds = new Set(likes?.map((like: any) => like.post_id) || []);
 
-      return posts.map(post => ({
+      return posts.map((post: any) => ({
         ...post,
         author: post.profiles,
         user_has_liked: likedPostIds.has(post.id)
       }));
     }
 
-    return posts.map(post => ({
+    return posts.map((post: any) => ({
       ...post,
       author: post.profiles,
       user_has_liked: false
@@ -97,13 +94,26 @@ export const postService = {
 
         if (deleteError) throw deleteError;
 
-        // Decrease like count
-        const { error: updateError } = await supabase
-          .from('posts')
-          .update({ like_count: supabase.sql`like_count - 1` })
-          .eq('id', postId);
+        // Decrease like count using raw SQL
+        const { error: updateError } = await supabase.rpc('decrement_like_count', {
+          post_id: postId
+        });
 
-        if (updateError) throw updateError;
+        if (updateError) {
+          // Fallback: manually update like count
+          const { data: currentPost } = await supabase
+            .from('posts')
+            .select('like_count')
+            .eq('id', postId)
+            .single();
+
+          if (currentPost) {
+            await supabase
+              .from('posts')
+              .update({ like_count: Math.max(0, currentPost.like_count - 1) })
+              .eq('id', postId);
+          }
+        }
 
         return false; // Post was unliked
       } else {
@@ -114,13 +124,26 @@ export const postService = {
 
         if (insertError) throw insertError;
 
-        // Increase like count
-        const { error: updateError } = await supabase
-          .from('posts')
-          .update({ like_count: supabase.sql`like_count + 1` })
-          .eq('id', postId);
+        // Increase like count using raw SQL
+        const { error: updateError } = await supabase.rpc('increment_like_count', {
+          post_id: postId
+        });
 
-        if (updateError) throw updateError;
+        if (updateError) {
+          // Fallback: manually update like count
+          const { data: currentPost } = await supabase
+            .from('posts')
+            .select('like_count')
+            .eq('id', postId)
+            .single();
+
+          if (currentPost) {
+            await supabase
+              .from('posts')
+              .update({ like_count: currentPost.like_count + 1 })
+              .eq('id', postId);
+          }
+        }
 
         return true; // Post was liked
       }
@@ -155,9 +178,13 @@ export const postService = {
       throw error;
     }
 
+    if (!data) {
+      throw new Error('No data returned from post creation');
+    }
+
     return {
       ...data,
-      author: data.profiles,
+      author: (data as any).profiles,
       user_has_liked: false
     };
   }
