@@ -1,13 +1,16 @@
 import React, { useState } from "react"
 import Head from "next/head"
 // import { useRouter } from "next/router" // Removed unused import
-import { Search, MessageCircle, Bell, User, Heart, MessageSquare, MoreHorizontal, Pin } from "lucide-react"
+import { Search, MessageSquare, Heart, MoreHorizontal, Pin } from "lucide-react" // Removed Bell, User, MessageCircle as they are in Header
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Header from "@/components/layout/Header" // Added shared Header
+import Footer from "@/components/layout/Footer" // Added Footer for consistency
+import { useAuth } from "@/contexts/AuthContext" // Added AuthContext
 
 const communityData = {
   id: 1,
@@ -105,6 +108,13 @@ const leaderboard = [
 export default function CommunityDetails() {
   // const router = useRouter() // Removed unused router variable
   const [activeTab, setActiveTab] = useState("Community")
+  const { setIsLoggedIn, setUserEmail } = useAuth(); // Get auth functions
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserEmail("");
+    // router.push("/"); // Optionally redirect, Header already does this
+  };
 
   return (
     <>
@@ -114,45 +124,13 @@ export default function CommunityDetails() {
       </Head>
 
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center space-x-4">
-                <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
-                  🤖
-                </div>
-                <div>
-                  <h1 className="font-semibold text-gray-900">{communityData.name}</h1>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-4">
-                <div className="relative max-w-md">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <Input
-                    type="text"
-                    placeholder="Search"
-                    className="pl-10 pr-4 py-2 bg-gray-100 border-0 rounded-lg"
-                  />
-                </div>
-                <Button variant="ghost" size="sm">
-                  <MessageCircle className="w-5 h-5" />
-                </Button>
-                <Button variant="ghost" size="sm" className="relative">
-                  <Bell className="w-5 h-5" />
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    1
-                  </span>
-                </Button>
-                <Button variant="ghost" size="sm">
-                  <User className="w-5 h-5" />
-                  <span className="ml-2">PE</span>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </header>
+        {/* Use Shared Header */}
+        <Header 
+          showCommunityHeader={true} 
+          communityName={communityData.name} 
+          communityIcon="🤖" // Example icon, can be dynamic
+          onLogout={handleLogout} 
+        />
 
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -389,6 +367,7 @@ export default function CommunityDetails() {
             </div>
           </div>
         </div>
+        <Footer /> {/* Added Footer */}
       </div>
     </>
   )

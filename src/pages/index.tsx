@@ -92,7 +92,7 @@ const communities = [
 ]
 
 export default function Home() {
-  const { isLoggedIn, setIsLoggedIn, userEmail, setUserEmail } = useAuth();
+  const { setIsLoggedIn, setUserEmail } = useAuth(); // Removed unused isLoggedIn, userEmail
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [authModalOpen, setAuthModalOpen] = useState(false)
