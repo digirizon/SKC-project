@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog"; // Removed DialogFooter
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Paperclip, Link2, Youtube, BarChart2, Smile, AtSign, Gif, ChevronDown } from "lucide-react";
+import { Paperclip, Link2, Youtube, BarChart2, Smile, Gift, ChevronDown } from "lucide-react"; // Changed Gif to Gift, removed AtSign
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -87,7 +86,7 @@ export default function CreatePostModal({
               <Button variant="ghost" size="icon" type="button" className="hover:bg-gray-100"><Youtube className="w-5 h-5" /></Button>
               <Button variant="ghost" size="icon" type="button" className="hover:bg-gray-100"><BarChart2 className="w-5 h-5" /></Button>
               <Button variant="ghost" size="icon" type="button" className="hover:bg-gray-100"><Smile className="w-5 h-5" /></Button>
-              <Button variant="ghost" size="icon" type="button" className="hover:bg-gray-100"><Gif className="w-5 h-5" /></Button>
+              <Button variant="ghost" size="icon" type="button" className="hover:bg-gray-100"><Gift className="w-5 h-5" /></Button>
               <Button variant="ghost" size="sm" type="button" className="hover:bg-gray-100 text-gray-500">
                 Select a category <ChevronDown className="w-4 h-4 ml-1" />
               </Button>
