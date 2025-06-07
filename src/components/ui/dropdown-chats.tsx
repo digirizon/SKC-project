@@ -1,4 +1,3 @@
-
 import React, { useState } from "react"
 import { MessageCircle, Search, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -36,13 +35,12 @@ export default function ChatsDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm">
+        <Button variant="ghost" size="sm" className="cursor-pointer">
           <MessageCircle className="w-5 h-5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[480px] p-0" align="end">
         <div className="bg-white rounded-lg shadow-lg border">
-          {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
             <h3 className="text-lg font-semibold">Chats</h3>
             <Button variant="outline" size="sm" className="bg-gray-100">
@@ -51,7 +49,6 @@ export default function ChatsDropdown() {
             </Button>
           </div>
 
-          {/* Search */}
           <div className="p-4 border-b">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -65,7 +62,6 @@ export default function ChatsDropdown() {
             </div>
           </div>
 
-          {/* Chats List */}
           <div className="max-h-96 overflow-y-auto">
             {chats.map((chat) => (
               <div key={chat.id} className={`flex items-start gap-3 p-4 hover:bg-gray-50 border-b last:border-b-0 cursor-pointer ${chat.isRead ? 'opacity-60' : ''}`}>

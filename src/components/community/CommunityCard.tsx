@@ -21,7 +21,7 @@ interface CommunityCardProps {
 
 export default function CommunityCard({ community }: CommunityCardProps) {
   return (
-    <Link href={`/community/${community.id}`}>
+    <Link href={`/community/${community.id}`} className="block">
       <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-white border border-gray-200 rounded-xl overflow-hidden">
         <div className="relative">
           <div 

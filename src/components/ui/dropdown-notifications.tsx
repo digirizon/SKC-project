@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { Bell, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-// import { Badge } from "@/components/ui/badge" // Removed unused Badge import
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -87,7 +86,7 @@ export default function NotificationsDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="relative">
+        <Button variant="ghost" size="sm" className="relative cursor-pointer">
           <Bell className="w-5 h-5" />
           {unreadCount > 0 && (
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
@@ -98,7 +97,6 @@ export default function NotificationsDropdown() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[480px] p-0" align="end">
         <div className="bg-white rounded-lg shadow-lg border">
-          {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
             <h3 className="text-lg font-semibold">Notifications</h3>
             <div className="flex items-center gap-3">
@@ -126,10 +124,9 @@ export default function NotificationsDropdown() {
             </div>
           </div>
 
-          {/* Notifications List */}
           <div className="max-h-96 overflow-y-auto">
             {notifications.map((notification) => (
-              <div key={notification.id} className={`flex items-start gap-3 p-4 hover:bg-gray-50 border-b last:border-b-0 ${notification.isRead ? 'opacity-60' : ''}`}>
+              <div key={notification.id} className={`flex items-start gap-3 p-4 hover:bg-gray-50 border-b last:border-b-0 cursor-pointer ${notification.isRead ? 'opacity-60' : ''}`}>
                 <Avatar className="w-10 h-10">
                   <AvatarImage src={notification.avatar} />
                   <AvatarFallback>{notification.user.split(' ').map(n => n[0]).join('')}</AvatarFallback>

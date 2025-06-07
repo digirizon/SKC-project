@@ -1,4 +1,3 @@
-
 import React, { useState, useContext } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import NotificationsDropdown from "@/components/ui/dropdown-notifications";
 import ChatsDropdown from "@/components/ui/dropdown-chats";
 import ProfileDropdown from "@/components/ui/dropdown-profile";
 import AuthModal from "@/components/auth/AuthModal";
-import LogoDropdown from "@/components/layout/LogoDropdown"; // Import the new dropdown
+import LogoDropdown from "@/components/layout/LogoDropdown";
 import { AuthContext } from "@/pages/index";
 
 interface HeaderProps {
@@ -77,8 +76,9 @@ export default function Header({ onLogout }: HeaderProps) {
               ) : (
                 <Button
                   variant="ghost"
-                  className="text-gray-700 hover:text-gray-900"
+                  className="text-gray-700 hover:text-gray-900 cursor-pointer"
                   onClick={() => handleAuthClick("login")}
+                  type="button"
                 >
                   LOG IN
                 </Button>
