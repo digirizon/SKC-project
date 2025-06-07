@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -7,10 +6,12 @@ type PostRow = Database["public"]["Tables"]["posts"]["Row"];
 type ProfileRow = Database["public"]["Tables"]["profiles"]["Row"];
 type PostLikeRow = Database["public"]["Tables"]["post_likes"]["Row"];
 
+// Define a more accurate type for the author object as returned by Supabase join
+type PostAuthor = Pick<ProfileRow, "full_name" | "username" | "avatar_url"> | null;
+
 // Combined type for Post with author details
-export interface Post extends Omit<PostRow, "author_id"> {
-  author_id: string; // Keep author_id for relations
-  author?: Pick<ProfileRow, "full_name" | "username" | "avatar_url">;
+export interface Post extends PostRow { // Inherit all fields from PostRow
+  author?: PostAuthor; // Make author optional and use the PostAuthor type
   user_has_liked?: boolean;
 }
 
@@ -19,11 +20,11 @@ export type PostLike = PostLikeRow;
 
 export const postService = {
   async getPosts(communityId: string, userId?: string): Promise<Post[]> {
-    const { data: postsData, error } = await supabase
+    const {  postsData, error } = await supabase
       .from("posts")
       .select(`
         *,
-        author:author_id ( 
+        author:profiles!posts_author_id_fkey ( 
           full_name,
           username,
           avatar_url
@@ -39,11 +40,15 @@ export const postService = {
 
     if (!postsData) return [];
 
-    // Explicitly type postsData based on the select query structure
-    const postsWithAuthor = postsData as Array<PostRow & { author: Pick<ProfileRow, "full_name" | "username" | "avatar_url"> | null }>;
+    // postsData should now be an array of PostRow with an optional author object
+    const postsWithAuthorDetails = postsData.map(p => ({
+      ...p,
+      // Supabase might return an array for the join, take the first element or null
+      author: Array.isArray(p.author) ? p.author[0] : p.author, 
+    })) as unknown as Array<PostRow & { author: PostAuthor }>;
 
     if (userId) {
-      const postIds = postsWithAuthor.map(post => post.id);
+      const postIds = postsWithAuthorDetails.map(post => post.id);
       const { data: likesData, error: likesError } = await supabase
         .from("post_likes")
         .select("post_id")
@@ -57,16 +62,14 @@ export const postService = {
 
       const likedPostIds = new Set(likesData?.map(like => like.post_id) || []);
 
-      return postsWithAuthor.map(post => ({
+      return postsWithAuthorDetails.map(post => ({
         ...post,
-        author: post.author || undefined, // Handle null author case
         user_has_liked: likedPostIds.has(post.id)
       }));
     }
 
-    return postsWithAuthor.map(post => ({
+    return postsWithAuthorDetails.map(post => ({
       ...post,
-      author: post.author || undefined,
       user_has_liked: false
     }));
   },
@@ -127,7 +130,7 @@ export const postService = {
     title?: string, 
     postType: string = "discussion"
   ): Promise<Post> {
-    const { data: newPostData, error } = await supabase
+    const {  newPostData, error } = await supabase
       .from("posts")
       .insert({
         community_id: communityId,
@@ -138,7 +141,7 @@ export const postService = {
       })
       .select(`
         *,
-        author:author_id (
+        author:profiles!posts_author_id_fkey (
           full_name,
           username,
           avatar_url
@@ -155,25 +158,16 @@ export const postService = {
       throw new Error("No data returned from post creation");
     }
     
-    const createdPost = newPostData as PostRow & { author: Pick<ProfileRow, "full_name" | "username" | "avatar_url"> | null };
-
-    return {
-      ...createdPost,
-      author: createdPost.author || undefined,
+    // newPostData should be a single PostRow with an optional author object
+    const createdPostWithAuthorDetails = {
+      ...newPostData,
+      // Supabase might return an array for the join, take the first element or null
+      author: Array.isArray(newPostData.author) ? newPostData.author[0] : newPostData.author,
       user_has_liked: false, // New post is not liked by default
-      // Ensure all PostRow fields are mapped
-      id: createdPost.id,
-      community_id: createdPost.community_id,
-      // author_id is already part of PostRow
-      title: createdPost.title,
-      content: createdPost.content,
-      post_type: createdPost.post_type,
-      is_pinned: createdPost.is_pinned,
-      like_count: createdPost.like_count,
-      comment_count: createdPost.comment_count,
-      created_at: createdPost.created_at,
-      updated_at: createdPost.updated_at,
-    };
+    } as unknown as Post;
+
+
+    return createdPostWithAuthorDetails;
   }
 };
 
