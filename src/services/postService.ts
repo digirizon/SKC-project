@@ -20,6 +20,8 @@ export type PostLike = PostLikeRow;
 
 export const postService = {
   async getPosts(communityId: string, userId?: string): Promise<Post[]> {
+    console.log("Fetching posts for community:", communityId, "user:", userId);
+    
     // Use a simpler approach - fetch posts and profiles separately
     const { data: postsData, error } = await supabase
       .from("posts")
@@ -27,21 +29,29 @@ export const postService = {
       .eq("community_id", communityId)
       .order("created_at", { ascending: false });
     
+    console.log("Posts query result:", { data: postsData, error });
+    
     if (error) {
       console.error("Error fetching posts:", error);
       throw error;
     }
 
-    if (!postsData || postsData.length === 0) return [];
+    if (!postsData || postsData.length === 0) {
+      console.log("No posts found for community:", communityId);
+      return [];
+    }
 
     // Get unique author IDs
     const authorIds = [...new Set(postsData.map(post => post.author_id).filter(Boolean))];
+    console.log("Author IDs to fetch:", authorIds);
     
     // Fetch author profiles separately
     const { data: profilesData, error: profilesError } = await supabase
       .from("profiles")
       .select("id, full_name, username, avatar_url")
       .in("id", authorIds);
+
+    console.log("Profiles query result:", { data: profilesData, error: profilesError });
 
     if (profilesError) {
       console.error("Error fetching profiles:", profilesError);
