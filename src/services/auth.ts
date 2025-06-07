@@ -1,5 +1,6 @@
+
 import { supabase } from "@/integrations/supabase/client";
-import { AuthResponse, Session, Provider } from "@supabase/supabase-js";
+import { AuthResponse, Session } from "@supabase/supabase-js";
 
 export const authService = {
   async signUp(email: string, password: string, name: string): Promise<AuthResponse> {
@@ -7,7 +8,7 @@ export const authService = {
       email,
       password,
       options: {
-         { // Corrected: 'data' should be the key for user metadata
+        data: {
           full_name: name,
         },
       },
@@ -25,7 +26,7 @@ export const authService = {
     return supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: typeof window !== "undefined" ? window.location.origin : "", // Ensure window is defined
+        redirectTo: typeof window !== "undefined" ? window.location.origin : "",
       },
     });
   },
