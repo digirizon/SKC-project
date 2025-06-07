@@ -1,31 +1,33 @@
-
 import { supabase } from "@/integrations/supabase/client";
-import { AuthError, AuthResponse } from "@supabase/supabase-js";
+import { AuthResponse, Session, Provider } from "@supabase/supabase-js";
 
 export const authService = {
   async signUp(email: string, password: string, name: string): Promise<AuthResponse> {
-    const { data, error } = await supabase.auth.signUp({
+    return supabase.auth.signUp({
       email,
       password,
       options: {
-        data: {
-          full_name: name
-        }
-      }
+         {
+          full_name: name,
+        },
+      },
     });
-
-    if (error) throw error;
-    return { data, error };
   },
 
   async signIn(email: string, password: string): Promise<AuthResponse> {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    return supabase.auth.signInWithPassword({
       email,
-      password
+      password,
     });
+  },
 
-    if (error) throw error;
-    return { data, error };
+  async signInWithGoogle(): Promise<AuthResponse> {
+    return supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: window.location.origin, // Or your specific callback page
+      },
+    });
   },
 
   async signOut(): Promise<void> {
@@ -45,7 +47,7 @@ export const authService = {
     return user;
   },
 
-  onAuthStateChange(callback: (event: string, session: any) => void) {
+  onAuthStateChange(callback: (event: string, session: Session | null) => void) {
     return supabase.auth.onAuthStateChange(callback);
   }
 };

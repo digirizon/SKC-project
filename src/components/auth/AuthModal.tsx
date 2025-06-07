@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { X } from "lucide-react"
+import { X, Chrome } from "lucide-react" // Added Chrome icon for Google
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -57,6 +57,21 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode, onSucce
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const { error: signInError } = await authService.signInWithGoogle();
+      if (signInError) throw signInError;
+      // Supabase handles redirection, onSuccess might be called on redirect page or via auth state change
+      // For now, we can close the modal, AuthContext will pick up the change.
+      onClose();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An OAuth error occurred");
       setIsLoading(false);
     }
   };
@@ -197,7 +212,28 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode, onSucce
               }
             </Button>
 
-            <div className="text-center">
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white px-2 text-gray-500">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <Button
+              variant="outline"
+              className="w-full flex items-center justify-center gap-2"
+              onClick={handleGoogleSignIn}
+              disabled={isLoading}
+            >
+              <Chrome className="w-4 h-4" /> {/* Using Chrome icon as a stand-in for Google logo */}
+              Google
+            </Button>
+
+            <div className="text-center mt-2"> {/* Adjusted margin top */}
               <span className="text-sm text-gray-600">
                 {mode === "login" ? "Don't have an account? " : "Already have an account? "}
                 <button
