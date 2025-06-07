@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Header from "@/components/layout/Header" // Added shared Header
 import Footer from "@/components/layout/Footer" // Added Footer for consistency
 import { useAuth } from "@/contexts/AuthContext" // Added AuthContext
@@ -107,7 +106,6 @@ const leaderboard = [
 
 export default function CommunityDetails() {
   // const router = useRouter() // Removed unused router variable
-  const [activeTab, setActiveTab] = useState("Community")
   const { setIsLoggedIn, setUserEmail } = useAuth(); // Get auth functions
 
   const handleLogout = () => {
@@ -136,18 +134,6 @@ export default function CommunityDetails() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Main Content */}
             <div className="lg:col-span-3">
-              {/* Navigation Tabs */}
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-                <TabsList className="grid w-full grid-cols-4 bg-white border border-gray-200">
-                  <TabsTrigger value="Community" className="data-[state=active]:bg-gray-100">
-                    Community
-                  </TabsTrigger>
-                  <TabsTrigger value="Members">Members</TabsTrigger>
-                  <TabsTrigger value="Leaderboards">Leaderboards</TabsTrigger>
-                  <TabsTrigger value="About">About</TabsTrigger>
-                </TabsList>
-              </Tabs>
-
               {/* Post Creation */}
               <Card className="mb-6">
                 <CardContent className="p-4">
