@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -18,7 +19,7 @@ export type PostLike = PostLikeRow;
 
 export const postService = {
   async getPosts(communityId: string, userId?: string): Promise<Post[]> {
-    const {  postsData, error } = await supabase // Corrected destructuring
+    const { data: postsData, error } = await supabase
       .from("posts")
       .select(`
         *,
@@ -43,7 +44,7 @@ export const postService = {
 
     if (userId) {
       const postIds = postsWithAuthor.map(post => post.id);
-      const {  likesData, error: likesError } = await supabase // Corrected destructuring
+      const { data: likesData, error: likesError } = await supabase
         .from("post_likes")
         .select("post_id")
         .eq("user_id", userId)
@@ -72,7 +73,7 @@ export const postService = {
 
   async likePost(postId: string, userId: string): Promise<boolean> {
     try {
-      const {  existingLike, error: fetchLikeError } = await supabase // Corrected destructuring
+      const { data: existingLike, error: fetchLikeError } = await supabase
         .from("post_likes")
         .select("id")
         .eq("post_id", postId)
@@ -126,7 +127,7 @@ export const postService = {
     title?: string, 
     postType: string = "discussion"
   ): Promise<Post> {
-    const {  newPostData, error } = await supabase // Corrected destructuring
+    const { data: newPostData, error } = await supabase
       .from("posts")
       .insert({
         community_id: communityId,
