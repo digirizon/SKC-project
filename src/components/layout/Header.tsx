@@ -1,19 +1,24 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import NotificationsDropdown from "@/components/ui/dropdown-notifications";
 import ChatsDropdown from "@/components/ui/dropdown-chats";
 import ProfileDropdown from "@/components/ui/dropdown-profile";
 import AuthModal from "@/components/auth/AuthModal";
 import LogoDropdown from "@/components/layout/LogoDropdown";
-import { AuthContext } from "@/pages/index";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface HeaderProps {
   onLogout?: () => void;
+  showCommunityHeader?: boolean;
+  communityName?: string;
+  communityIcon?: string;
 }
 
-export default function Header({ onLogout }: HeaderProps) {
-  const { isLoggedIn, setIsLoggedIn, userEmail, setUserEmail } = useContext(AuthContext);
+export default function Header({ onLogout, showCommunityHeader = false, communityName, communityIcon }: HeaderProps) {
+  const { isLoggedIn, setIsLoggedIn, userEmail, setUserEmail } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
 
@@ -39,34 +44,41 @@ export default function Header({ onLogout }: HeaderProps) {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center">
-                <div className="text-2xl font-bold">
-                  <span className="text-blue-600">3rd</span>
-                  <span className="text-orange-500">Hub</span>
-                </div>
-              </Link>
-              {!isLoggedIn && <LogoDropdown onTriggerAuthModal={handleAuthClick} />}
+            <div className="flex items-center space-x-4">
+              {showCommunityHeader && communityName ? (
+                <>
+                  <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                    {communityIcon || "🤖"}
+                  </div>
+                  <div>
+                    <h1 className="font-semibold text-gray-900">{communityName}</h1>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link href="/" className="flex items-center">
+                    <div className="text-2xl font-bold">
+                      <span className="text-blue-600">3rd</span>
+                      <span className="text-orange-500">Hub</span>
+                    </div>
+                  </Link>
+                  {!isLoggedIn && <LogoDropdown onTriggerAuthModal={handleAuthClick} />}
+                </>
+              )}
             </div>
 
-            {isLoggedIn && (
-              <nav className="hidden md:flex items-center space-x-8">
-                <Link href="/" className="text-gray-700 hover:text-gray-900">
-                  Communities
-                </Link>
-                <Link href="/affiliates" className="text-gray-700 hover:text-gray-900">
-                  Affiliates
-                </Link>
-                <Link href="/support" className="text-gray-700 hover:text-gray-900">
-                  Support
-                </Link>
-                <Link href="/careers" className="text-gray-700 hover:text-gray-900">
-                  Careers
-                </Link>
-              </nav>
-            )}
-
             <div className="flex items-center space-x-4">
+              {isLoggedIn && showCommunityHeader && (
+                <div className="relative max-w-md">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
+                    type="text"
+                    placeholder="Search"
+                    className="pl-10 pr-4 py-2 bg-gray-100 border-0 rounded-lg"
+                  />
+                </div>
+              )}
+
               {isLoggedIn ? (
                 <>
                   <ChatsDropdown />

@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react"; // Removed useContext
+import React, { useState } from "react";
 import Head from "next/head";
 import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -7,20 +7,7 @@ import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
 import CommunityCard from "@/components/community/CommunityCard"
 import AuthModal from "@/components/auth/AuthModal"
-
-interface AuthContextType {
-  isLoggedIn: boolean
-  setIsLoggedIn: (value: boolean) => void
-  userEmail: string
-  setUserEmail: (value: string) => void
-}
-
-export const AuthContext = createContext<AuthContextType>({
-  isLoggedIn: false,
-  setIsLoggedIn: () => {},
-  userEmail: "",
-  setUserEmail: () => {}
-})
+import { useAuth } from "@/contexts/AuthContext"
 
 const categories = [
   { name: "All", active: true },
@@ -105,12 +92,11 @@ const communities = [
 ]
 
 export default function Home() {
+  const { isLoggedIn, setIsLoggedIn, userEmail, setUserEmail } = useAuth();
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("signup")
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [userEmail, setUserEmail] = useState("")
 
   const handleCreateYourOwn = () => {
     setAuthMode("signup")
@@ -129,7 +115,7 @@ export default function Home() {
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userEmail, setUserEmail }}>
+    <>
       <Head>
         <title>3rdHub - Discover communities</title>
         <meta name="description" content="Discover communities or create your own on 3rdHub" />
@@ -231,6 +217,6 @@ export default function Home() {
         onSwitchMode={setAuthMode}
         onSuccess={handleAuthSuccess}
       />
-    </AuthContext.Provider>
+    </>
   )
 }
