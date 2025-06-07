@@ -1,6 +1,5 @@
-
 import { supabase } from "@/integrations/supabase/client";
-import { AuthResponse, Session, User, Provider, AuthError, OAuthResponse } from "@supabase/supabase-js";
+import { AuthResponse, Session, User, AuthError, OAuthResponse } from "@supabase/supabase-js";
 
 export const authService = {
   async signUp(email: string, password: string, name: string): Promise<AuthResponse> {

@@ -44,7 +44,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
 
     // Listen for auth changes
-    const { data: { subscription } } = authService.onAuthStateChange((event, session) => {
+    // Corrected: authService.onAuthStateChange returns the subscription directly
+    const subscription = authService.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoggedIn(!!session);
