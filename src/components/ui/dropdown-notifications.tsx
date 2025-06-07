@@ -13,7 +13,7 @@ const notifications = [
   {
     id: 1,
     user: "Jay E",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=faces",
     badge: "💎",
     action: "(following) new post",
     time: "5d",
@@ -23,7 +23,7 @@ const notifications = [
   {
     id: 2,
     user: "Nate Herk",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces",
     badge: "💎",
     action: "(following) new post",
     time: "5d",

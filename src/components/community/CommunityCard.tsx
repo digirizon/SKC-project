@@ -1,4 +1,3 @@
-
 import React from "react"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
@@ -13,6 +12,7 @@ interface Community {
   price: string
   image: string
   category: string
+  avatar: string
 }
 
 interface CommunityCardProps {
@@ -42,7 +42,9 @@ export default function CommunityCard({ community }: CommunityCardProps) {
         
         <CardContent className="p-4">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-lg flex-shrink-0"></div>
+            <div className="w-10 h-10 rounded-lg flex-shrink-0 overflow-hidden">
+              <img src={community.avatar} alt={community.title} className="w-full h-full object-cover" />
+            </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold text-gray-900 mb-2 line-clamp-1">
                 {community.title}

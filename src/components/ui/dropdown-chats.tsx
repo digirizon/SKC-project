@@ -14,7 +14,7 @@ const chats = [
   {
     id: 1,
     user: "Yash Chauhan",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=faces",
     badge: "🔥",
     time: "5d",
     message: "Hello there, Yash here! Just approved your membership. ...",
@@ -23,7 +23,7 @@ const chats = [
   {
     id: 2,
     user: "Nate Herkelman",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces",
     time: "5d",
     message: "Hey A! Welcome to AI Automation Society! We're so glad ...",
     isRead: true

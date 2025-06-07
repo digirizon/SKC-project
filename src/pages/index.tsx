@@ -29,8 +29,9 @@ const communities = [
     description: "Learn modern calligraphy the fun, easy way! ✏️ With sisters Jordan & Jillian",
     members: "1.3k Members",
     price: "$9/month",
-    image: "/api/placeholder/400/200",
-    category: "Hobbies"
+    image: "https://images.unsplash.com/photo-1596495577886-d920f1fb7238?w=800&h=400&fit=crop",
+    category: "Hobbies",
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces"
   },
   {
     id: 2,
@@ -39,8 +40,9 @@ const communities = [
     description: "Level up your business and get on the path to financial freedom with billion-dollar founder Tom Bilyeu.",
     members: "1.1k Members",
     price: "$119/month",
-    image: "/api/placeholder/400/200",
-    category: "Money"
+    image: "https://images.unsplash.com/photo-1553484771-047a44eee27a?w=800&h=400&fit=crop",
+    category: "Money",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=faces"
   },
   {
     id: 3,
@@ -49,8 +51,9 @@ const communities = [
     description: "#1 Fragrance Community 🧔 Our mission is to help YOU leverage the power of scent to become the man you know yourself to...",
     members: "6.9k Members",
     price: "Free",
-    image: "/api/placeholder/400/200",
-    category: "Self-improvement"
+    image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=800&h=400&fit=crop",
+    category: "Self-improvement",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces"
   },
   {
     id: 4,
@@ -59,8 +62,9 @@ const communities = [
     description: "Welcome! Ready to start losing weight in 2025 with massive piles of plant based food? Let's go!!",
     members: "14.5k Members",
     price: "Free",
-    image: "/api/placeholder/400/200",
-    category: "Health"
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&h=400&fit=crop",
+    category: "Health",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces"
   },
   {
     id: 5,
@@ -69,8 +73,9 @@ const communities = [
     description: "A community for mastering AI-driven automation and AI agents. Learn, collaborate, and optimize your workflows!",
     members: "73.9k Members",
     price: "Free",
-    image: "/api/placeholder/400/200",
-    category: "Tech"
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop",
+    category: "Tech",
+    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&h=80&fit=crop&crop=faces"
   },
   {
     id: 6,
@@ -79,8 +84,9 @@ const communities = [
     description: "Get a PhD in Sneaker Reselling 😷 👟",
     members: "487 Members",
     price: "$97/month",
-    image: "/api/placeholder/400/200",
-    category: "Money"
+    image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=800&h=400&fit=crop",
+    category: "Money",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=faces"
   }
 ]
 
