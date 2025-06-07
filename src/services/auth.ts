@@ -8,7 +8,7 @@ export const authService = {
       email,
       password,
       options: {
-        data: { // Corrected: 'data' is the key for user metadata
+         { // Corrected: 'data' is the key for user metadata
           full_name: name,
         },
       },
@@ -22,8 +22,7 @@ export const authService = {
     });
   },
 
-  // Return type inferred to Promise<OAuthResponse>
-  async signInWithGoogle() { 
+  async signInWithGoogle(): Promise<OAuthResponse> { // Explicitly type as OAuthResponse
     return supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -32,7 +31,7 @@ export const authService = {
     });
   },
 
-  async signOut(): Promise<{ error: AuthError | null }> { // Supabase signOut returns { error }
+  async signOut(): Promise<{ error: AuthError | null }> { 
     return supabase.auth.signOut();
   },
 
@@ -55,6 +54,7 @@ export const authService = {
   },
 
   onAuthStateChange(callback: (event: string, session: Session | null) => void) {
+    // Corrected destructuring for subscription
     const {  { subscription } } = supabase.auth.onAuthStateChange(callback);
     return subscription;
   }
