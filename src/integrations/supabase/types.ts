@@ -10,6 +10,108 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      chat_conversations: {
+        Row: {
+          id: string
+          participant1_id: string | null
+          participant2_id: string | null
+          last_message_at: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          participant1_id?: string | null
+          participant2_id?: string | null
+          last_message_at?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          participant1_id?: string | null
+          participant2_id?: string | null
+          last_message_at?: string | null
+          created_at?: string | null
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          id: string
+          conversation_id: string | null
+          sender_id: string | null
+          content: string
+          is_read: boolean | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          conversation_id?: string | null
+          sender_id?: string | null
+          content: string
+          is_read?: boolean | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          conversation_id?: string | null
+          sender_id?: string | null
+          content?: string
+          is_read?: boolean | null
+          created_at?: string | null
+        }
+        Relationships: []
+      }
+      comment_likes: {
+        Row: {
+          id: string
+          comment_id: string | null
+          user_id: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          comment_id?: string | null
+          user_id?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          comment_id?: string | null
+          user_id?: string | null
+          created_at?: string | null
+        }
+        Relationships: []
+      }
+      comments: {
+        Row: {
+          id: string
+          post_id: string | null
+          author_id: string | null
+          content: string
+          like_count: number | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          post_id?: string | null
+          author_id?: string | null
+          content: string
+          like_count?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          post_id?: string | null
+          author_id?: string | null
+          content?: string
+          like_count?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       communities: {
         Row: {
           id: string
@@ -17,8 +119,16 @@ export interface Database {
           description: string | null
           image_url: string | null
           avatar_url: string | null
-          created_at: string
-          owner_id: string | null
+          category: string | null
+          price_type: string | null
+          price_amount: number | null
+          price_period: string | null
+          member_count: number | null
+          rank: number | null
+          owner_id: string
+          is_public: boolean | null
+          created_at: string | null
+          updated_at: string | null
         }
         Insert: {
           id?: string
@@ -26,8 +136,16 @@ export interface Database {
           description?: string | null
           image_url?: string | null
           avatar_url?: string | null
-          created_at?: string
-          owner_id?: string | null
+          category?: string | null
+          price_type?: string | null
+          price_amount?: number | null
+          price_period?: string | null
+          member_count?: number | null
+          rank?: number | null
+          owner_id: string
+          is_public?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
         }
         Update: {
           id?: string
@@ -35,166 +153,228 @@ export interface Database {
           description?: string | null
           image_url?: string | null
           avatar_url?: string | null
-          created_at?: string
-          owner_id?: string | null
+          category?: string | null
+          price_type?: string | null
+          price_amount?: number | null
+          price_period?: string | null
+          member_count?: number | null
+          rank?: number | null
+          owner_id?: string
+          is_public?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "communities_owner_id_fkey"
-            columns: ["owner_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
-      posts: {
+      community_memberships: {
         Row: {
           id: string
-          community_id: string
-          author_id: string
-          title: string | null
-          content: string
-          post_type: string // e.g., 'discussion', 'announcement', 'lesson'
-          is_pinned: boolean
-          like_count: number
-          comment_count: number
-          created_at: string
-          updated_at: string
+          community_id: string | null
+          user_id: string | null
+          role: string | null
+          joined_at: string | null
         }
         Insert: {
           id?: string
-          community_id: string
-          author_id: string
-          title?: string | null
-          content: string
-          post_type?: string
-          is_pinned?: boolean
-          like_count?: number
-          comment_count?: number
-          created_at?: string
-          updated_at?: string
+          community_id?: string | null
+          user_id?: string | null
+          role?: string | null
+          joined_at?: string | null
         }
         Update: {
           id?: string
-          community_id?: string
-          author_id?: string
-          title?: string | null
-          content?: string
-          post_type?: string
-          is_pinned?: boolean
-          like_count?: number
-          comment_count?: number
-          created_at?: string
-          updated_at?: string
+          community_id?: string | null
+          user_id?: string | null
+          role?: string | null
+          joined_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "posts_author_id_fkey"
-            columns: ["author_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "posts_community_id_fkey"
-            columns: ["community_id"]
-            referencedRelation: "communities"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
+      }
+      leaderboard_entries: {
+        Row: {
+          id: string
+          community_id: string | null
+          user_id: string | null
+          points: number | null
+          rank: number | null
+          period: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          community_id?: string | null
+          user_id?: string | null
+          points?: number | null
+          rank?: number | null
+          period?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          community_id?: string | null
+          user_id?: string | null
+          points?: number | null
+          rank?: number | null
+          period?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          id: string
+          user_id: string | null
+          type: string
+          title: string
+          message: string
+          related_id: string | null
+          community_id: string | null
+          is_read: boolean | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          type: string
+          title: string
+          message: string
+          related_id?: string | null
+          community_id?: string | null
+          is_read?: boolean | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          type?: string
+          title?: string
+          message?: string
+          related_id?: string | null
+          community_id?: string | null
+          is_read?: boolean | null
+          created_at?: string | null
+        }
+        Relationships: []
       }
       post_likes: {
         Row: {
           id: string
-          post_id: string
-          user_id: string
-          created_at: string
+          post_id: string | null
+          user_id: string | null
+          created_at: string | null
         }
         Insert: {
           id?: string
-          post_id: string
-          user_id: string
-          created_at?: string
+          post_id?: string | null
+          user_id?: string | null
+          created_at?: string | null
         }
         Update: {
           id?: string
-          post_id?: string
-          user_id?: string
-          created_at?: string
+          post_id?: string | null
+          user_id?: string | null
+          created_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "post_likes_post_id_fkey"
-            columns: ["post_id"]
-            referencedRelation: "posts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "post_likes_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles" // Assuming you have a profiles table linked to auth.users
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
-      profiles: { // Assuming a profiles table for user metadata
+      posts: {
         Row: {
-          id: string // Typically mirrors auth.users.id
-          username: string | null
+          id: string
+          community_id: string | null
+          author_id: string | null
+          title: string | null
+          content: string
+          post_type: string | null
+          is_pinned: boolean | null
+          like_count: number | null
+          comment_count: number | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          community_id?: string | null
+          author_id?: string | null
+          title?: string | null
+          content: string
+          post_type?: string | null
+          is_pinned?: boolean | null
+          like_count?: number | null
+          comment_count?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          community_id?: string | null
+          author_id?: string | null
+          title?: string | null
+          content?: string
+          post_type?: string | null
+          is_pinned?: boolean | null
+          like_count?: number | null
+          comment_count?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          id: string
           full_name: string | null
+          username: string | null
           avatar_url: string | null
+          bio: string | null
+          level: number | null
+          points: number | null
+          online_status: boolean | null
+          joined_at: string | null
           updated_at: string | null
         }
         Insert: {
           id: string
-          username?: string | null
           full_name?: string | null
+          username?: string | null
           avatar_url?: string | null
+          bio?: string | null
+          level?: number | null
+          points?: number | null
+          online_status?: boolean | null
+          joined_at?: string | null
           updated_at?: string | null
         }
         Update: {
           id?: string
-          username?: string | null
           full_name?: string | null
+          username?: string | null
           avatar_url?: string | null
+          bio?: string | null
+          level?: number | null
+          points?: number | null
+          online_status?: boolean | null
+          joined_at?: string | null
           updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "profiles_id_fkey"
-            columns: ["id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      increment_like_count: { // Renamed from increment for clarity
-        Args: {
-          post_id: string
-        }
-        Returns: undefined 
-      }
-      decrement_like_count: { // Renamed from decrement for clarity
+      increment_like_count: {
         Args: {
           post_id: string
         }
         Returns: undefined
       }
-      // Example: If you had a function to get user profile
-      // get_user_profile: {
-      //   Args: {
-      //     user_id: string
-      //   }
-      //   Returns: {
-      //     username: string
-      //     full_name: string
-      //     avatar_url: string
-      //   }[]
-      // }
+      decrement_like_count: {
+        Args: {
+          post_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
