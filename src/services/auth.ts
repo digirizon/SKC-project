@@ -1,6 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { AuthResponse, Session, Provider, AuthError, OAuthResponse } from "@supabase/supabase-js"; // Added Provider, AuthError, OAuthResponse for clarity, though AuthResponse should cover them.
+import { AuthResponse, Session, User, Provider, AuthError, OAuthResponse } from "@supabase/supabase-js";
 
 export const authService = {
   async signUp(email: string, password: string, name: string): Promise<AuthResponse> {
@@ -8,7 +8,7 @@ export const authService = {
       email,
       password,
       options: {
-         {
+        data: { // Corrected: 'data' is the key for user metadata
           full_name: name,
         },
       },
@@ -22,7 +22,7 @@ export const authService = {
     });
   },
 
-  // Changed: Removed explicit Promise<AuthResponse> to let TypeScript infer the more specific type
+  // Return type inferred to Promise<OAuthResponse>
   async signInWithGoogle() { 
     return supabase.auth.signInWithOAuth({
       provider: "google",
@@ -32,25 +32,31 @@ export const authService = {
     });
   },
 
-  async signOut(): Promise<void> {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+  async signOut(): Promise<{ error: AuthError | null }> { // Supabase signOut returns { error }
+    return supabase.auth.signOut();
   },
 
-  async getCurrentSession(): Promise<Session | null> { // More specific return type
-    const {  { session }, error } = await supabase.auth.getSession();
-    if (error) throw error;
-    return session;
+  async getCurrentSession(): Promise<Session | null> {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      console.error("Error getting session:", error);
+      return null;
+    }
+    return data.session;
   },
 
-  async getCurrentUser() { // Let TypeScript infer: Promise<User | null>
-    const {  { user }, error } = await supabase.auth.getUser();
-    if (error) throw error;
-    return user;
+  async getCurrentUser(): Promise<User | null> {
+    const { data, error } = await supabase.auth.getUser();
+    if (error) {
+      console.error("Error getting user:", error);
+      return null;
+    }
+    return data.user;
   },
 
   onAuthStateChange(callback: (event: string, session: Session | null) => void) {
-    return supabase.auth.onAuthStateChange(callback);
+    const {  { subscription } } = supabase.auth.onAuthStateChange(callback);
+    return subscription;
   }
 };
 
