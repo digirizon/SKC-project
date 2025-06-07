@@ -1,18 +1,20 @@
-import React from "react"
+
+import React, { useState, useEffect } from "react"
 import Head from "next/head"
-// import { useRouter } from "next/router" // Removed unused import
-import { MessageSquare, Heart, MoreHorizontal, Pin } from "lucide-react" // Removed Bell, User, MessageCircle, Search as they are in Header or unused
+import { useRouter } from "next/router"
+import { MessageSquare, Heart, MoreHorizontal, Pin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import Header from "@/components/layout/Header" // Added shared Header
-import Footer from "@/components/layout/Footer" // Added Footer for consistency
-import { useAuth } from "@/contexts/AuthContext" // Added AuthContext
+import Header from "@/components/layout/Header"
+import Footer from "@/components/layout/Footer"
+import { useAuth } from "@/contexts/AuthContext"
+import { postService, Post } from "@/services/postService"
 
 const communityData = {
-  id: 1,
+  id: "550e8400-e29b-41d4-a716-446655440007",
   name: "The RoboNuggets Network (free)",
   description: "Making AI connections easy 🤖",
   url: "3rdhub.com/robonuggets-free",
@@ -29,73 +31,6 @@ const communityData = {
   ]
 }
 
-const posts = [
-  {
-    id: 1,
-    author: "Jay E",
-    authorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=faces",
-    timestamp: "Dec 24",
-    category: "Introduce Yourself",
-    title: "Welcome to The RoboNuggets Network 🤖",
-    content: "Hi there! Thank you for being here. We're very early in the journey so really appreciate the trust as we build up this network to become something that's really valuable for everyone in this group! Basically",
-    likes: 82,
-    comments: 83,
-    isPinned: true,
-    commentTime: "23h ago"
-  },
-  {
-    id: 2,
-    author: "Jay E",
-    authorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=faces",
-    timestamp: "Dec 24",
-    category: "Nuggets & Tips",
-    title: "Bonus lesson (n5) - The 1 Method you should know to win AI ...",
-    content: "Hey everyone! 👋 Have a short but important bonus lesson for you all! Because in this video we go through a principle that's true not just for AI Automations, but when",
-    likes: 9,
-    comments: 8,
-    isPinned: true,
-    commentTime: "5h ago",
-    hasImage: true
-  },
-  {
-    id: 3,
-    author: "Jay E",
-    authorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=faces",
-    timestamp: "Dec 24",
-    category: "Announcements",
-    title: "The Ultimate Publishing Agent - 9 Socials in 1! (n8n no-code)...",
-    content: "Hey team, got an exciting lesson for you this week! In this tutorial, you'll learn how to set up one of the best publishing agents available today - as it seamlessly integrates",
-    likes: 15,
-    comments: 10,
-    isPinned: true,
-    commentTime: "23h ago",
-    hasImage: true
-  },
-  {
-    id: 4,
-    author: "Cheeto Burrito",
-    authorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=faces",
-    timestamp: "7d",
-    category: "Introduce Yourself",
-    title: "Can you make profit off AI without spending a penny?",
-    content: "That's pretty much my goal is to try and make atleast one penny off of AI. Hope everyone who sees this has a great day.",
-    likes: 6,
-    comments: 12,
-    commentTime: "5h ago"
-  },
-  {
-    id: 5,
-    author: "N M",
-    authorAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop&crop=faces",
-    timestamp: "7d",
-    category: "General discussion",
-    title: "Expression Inside Message Model",
-    content: "In the prompt to message ai model the part that is `{{$json.response.text}}` is red and in the result it is [undefined]",
-    likes: 1,
-    comments: 0
-  }
-]
-
 const leaderboard = [
   { rank: 1, name: "Cheeto Burrito", points: "+7", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=faces" },
   { rank: 2, name: "Beno Curt", points: "+7", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=32&h=32&fit=crop&crop=faces" },
@@ -105,14 +40,91 @@ const leaderboard = [
 ]
 
 export default function CommunityDetails() {
-  // const router = useRouter() // Removed unused router variable
-  const { setIsLoggedIn, setUserEmail } = useAuth(); // Get auth functions
+  const router = useRouter()
+  const { user, isLoggedIn } = useAuth()
+  const [posts, setPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState(true)
+  const [likingPosts, setLikingPosts] = useState<Set<string>>(new Set())
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserEmail("");
-    // router.push("/"); // Optionally redirect, Header already does this
-  };
+  useEffect(() => {
+    if (router.isReady) {
+      loadPosts()
+    }
+  }, [router.isReady, user])
+
+  const loadPosts = async () => {
+    try {
+      setLoading(true)
+      const fetchedPosts = await postService.getPosts(communityData.id, user?.id)
+      setPosts(fetchedPosts)
+    } catch (error) {
+      console.error("Error loading posts:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleLikePost = async (postId: string) => {
+    if (!user || !isLoggedIn) {
+      console.log("User must be logged in to like posts")
+      return
+    }
+
+    if (likingPosts.has(postId)) {
+      return // Prevent double-clicking
+    }
+
+    try {
+      setLikingPosts(prev => new Set(prev).add(postId))
+      
+      const wasLiked = await postService.likePost(postId, user.id)
+      
+      // Update the post in the local state
+      setPosts(prevPosts => 
+        prevPosts.map(post => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              user_has_liked: wasLiked,
+              like_count: wasLiked ? post.like_count + 1 : post.like_count - 1
+            }
+          }
+          return post
+        })
+      )
+    } catch (error) {
+      console.error("Error liking post:", error)
+    } finally {
+      setLikingPosts(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(postId)
+        return newSet
+      })
+    }
+  }
+
+  const formatTimestamp = (timestamp: string) => {
+    const date = new Date(timestamp)
+    const now = new Date()
+    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60))
+    
+    if (diffInHours < 24) {
+      return `${diffInHours}h ago`
+    } else if (diffInHours < 168) {
+      return `${Math.floor(diffInHours / 24)}d ago`
+    } else {
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    }
+  }
+
+  const getCategoryFromPostType = (postType: string) => {
+    switch (postType) {
+      case 'announcement': return 'Announcements'
+      case 'lesson': return 'Nuggets & Tips'
+      case 'discussion': return 'General discussion'
+      default: return 'General discussion'
+    }
+  }
 
   return (
     <>
@@ -122,12 +134,10 @@ export default function CommunityDetails() {
       </Head>
 
       <div className="min-h-screen bg-gray-50">
-        {/* Use Shared Header */}
         <Header 
           showCommunityHeader={true} 
           communityName={communityData.name} 
-          communityIcon="🤖" // Example icon, can be dynamic
-          onLogout={handleLogout} 
+          communityIcon="🤖"
         />
 
         <div className="max-w-7xl mx-auto px-4 py-6">
@@ -139,7 +149,9 @@ export default function CommunityDetails() {
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-3">
                     <Avatar>
-                      <AvatarFallback>PE</AvatarFallback>
+                      <AvatarFallback>
+                        {user?.email?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
                     </Avatar>
                     <Input
                       placeholder="Write something"
@@ -173,75 +185,90 @@ export default function CommunityDetails() {
 
               {/* Posts */}
               <div className="space-y-4">
-                {posts.map((post) => (
-                  <Card key={post.id} className="bg-white">
-                    <CardContent className="p-6">
-                      <div className="flex items-start space-x-3">
-                        <Avatar>
-                          <AvatarImage src={post.authorAvatar} />
-                          <AvatarFallback>{post.author.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <span className="font-semibold text-gray-900">{post.author}</span>
-                            <span className="text-sm text-gray-500">{post.timestamp}</span>
-                            <Badge variant="secondary" className="text-xs">
-                              {post.category}
-                            </Badge>
-                            {post.isPinned && (
-                              <Pin className="w-4 h-4 text-gray-400" />
-                            )}
-                          </div>
-                          
-                          <div className="flex items-start space-x-2 mb-3">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                            <div>
-                              <h3 className="font-semibold text-gray-900 mb-2">{post.title}</h3>
-                              <p className="text-gray-700 text-sm">{post.content}</p>
-                            </div>
-                          </div>
-
-                          {post.hasImage && (
-                            <div className="mb-4">
-                              <div className="w-32 h-20 bg-gray-200 rounded-lg"></div>
-                            </div>
-                          )}
-
-                          <div className="flex items-center space-x-6 text-sm text-gray-500">
-                            <button className="flex items-center space-x-1 hover:text-gray-700">
-                              <Heart className="w-4 h-4" />
-                              <span>{post.likes}</span>
-                            </button>
-                            <button className="flex items-center space-x-1 hover:text-gray-700">
-                              <MessageSquare className="w-4 h-4" />
-                              <span>{post.comments}</span>
-                            </button>
-                            <div className="flex items-center space-x-2">
-                              <div className="flex -space-x-1">
-                                {[
-                                  "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=24&h=24&fit=crop&crop=faces",
-                                  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=24&h=24&fit=crop&crop=faces",
-                                  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=24&h=24&fit=crop&crop=faces"
-                                ].map((avatarUrl, i) => (
-                                  <Avatar key={i} className="w-6 h-6 border-2 border-white">
-                                    <AvatarImage src={avatarUrl} />
-                                    <AvatarFallback className="text-xs">U</AvatarFallback>
-                                  </Avatar>
-                                ))}
-                              </div>
-                              {post.commentTime && (
-                                <span className="text-blue-600">New comment {post.commentTime}</span>
+                {loading ? (
+                  <div className="text-center py-8">Loading posts...</div>
+                ) : posts.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">No posts yet. Be the first to post!</div>
+                ) : (
+                  posts.map((post) => (
+                    <Card key={post.id} className="bg-white">
+                      <CardContent className="p-6">
+                        <div className="flex items-start space-x-3">
+                          <Avatar>
+                            <AvatarImage src={post.author?.avatar_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=faces"} />
+                            <AvatarFallback>
+                              {post.author?.full_name?.split(' ').map(n => n[0]).join('') || "U"}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-2 mb-2">
+                              <span className="font-semibold text-gray-900">
+                                {post.author?.full_name || "Anonymous"}
+                              </span>
+                              <span className="text-sm text-gray-500">
+                                {formatTimestamp(post.created_at)}
+                              </span>
+                              <Badge variant="secondary" className="text-xs">
+                                {getCategoryFromPostType(post.post_type)}
+                              </Badge>
+                              {post.is_pinned && (
+                                <Pin className="w-4 h-4 text-gray-400" />
                               )}
                             </div>
+                            
+                            <div className="flex items-start space-x-2 mb-3">
+                              <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                              <div>
+                                {post.title && (
+                                  <h3 className="font-semibold text-gray-900 mb-2">{post.title}</h3>
+                                )}
+                                <p className="text-gray-700 text-sm">{post.content}</p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center space-x-6 text-sm text-gray-500">
+                              <button 
+                                className={`flex items-center space-x-1 hover:text-red-500 transition-colors ${
+                                  post.user_has_liked ? 'text-red-500' : 'text-gray-500'
+                                } ${likingPosts.has(post.id) ? 'opacity-50' : ''}`}
+                                onClick={() => handleLikePost(post.id)}
+                                disabled={likingPosts.has(post.id)}
+                              >
+                                <Heart 
+                                  className={`w-4 h-4 ${
+                                    post.user_has_liked ? 'fill-current text-red-500' : ''
+                                  }`} 
+                                />
+                                <span>{post.like_count}</span>
+                              </button>
+                              <button className="flex items-center space-x-1 hover:text-gray-700">
+                                <MessageSquare className="w-4 h-4" />
+                                <span>{post.comment_count}</span>
+                              </button>
+                              <div className="flex items-center space-x-2">
+                                <div className="flex -space-x-1">
+                                  {[
+                                    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=24&h=24&fit=crop&crop=faces",
+                                    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=24&h=24&fit=crop&crop=faces",
+                                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=24&h=24&fit=crop&crop=faces"
+                                  ].map((avatarUrl, i) => (
+                                    <Avatar key={i} className="w-6 h-6 border-2 border-white">
+                                      <AvatarImage src={avatarUrl} />
+                                      <AvatarFallback className="text-xs">U</AvatarFallback>
+                                    </Avatar>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
                           </div>
+                          <Button variant="ghost" size="sm">
+                            <MoreHorizontal className="w-4 h-4" />
+                          </Button>
                         </div>
-                        <Button variant="ghost" size="sm">
-                          <MoreHorizontal className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
               </div>
 
               {/* Pagination */}
@@ -353,7 +380,7 @@ export default function CommunityDetails() {
             </div>
           </div>
         </div>
-        <Footer /> {/* Added Footer */}
+        <Footer />
       </div>
     </>
   )
