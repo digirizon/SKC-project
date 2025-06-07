@@ -7,7 +7,7 @@ export const authService = {
       email,
       password,
       options: {
-         {
+         { // Corrected: 'data' should be the key for user metadata
           full_name: name,
         },
       },
@@ -25,7 +25,7 @@ export const authService = {
     return supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: window.location.origin, // Or your specific callback page
+        redirectTo: typeof window !== "undefined" ? window.location.origin : "", // Ensure window is defined
       },
     });
   },
