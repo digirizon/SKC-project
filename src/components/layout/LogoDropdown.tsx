@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useRouter } from "next/router";
 import { Search, PlusCircle, Compass, Settings2 } from "lucide-react";
@@ -9,7 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
+  // DropdownMenuSeparator, // Removed unused import
 } from "@/components/ui/dropdown-menu";
 
 interface LogoDropdownProps {
